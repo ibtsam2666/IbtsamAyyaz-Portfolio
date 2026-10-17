@@ -6,7 +6,17 @@
 <title>Ibtsam Ayyaz · QA Automation</title>
 <meta name="description" content="Ibtsam Ayyaz, QA Automation Engineer / SDET. AI QA agents, Playwright and Cypress automation, parallel CI, mutation testing.">
 <meta property="og:title" content="Ibtsam Ayyaz · QA Automation Engineer / SDET">
-<meta property="og:description" content="AI QA agents, Playwright and Cypress in TypeScript, CI runtime cut from 3–4 hours to 30 minutes.">
+<meta property="og:description" content="Reliable test automation, CI and AI-assisted QA. Playwright · TypeScript · QA agents.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/">
+<meta property="og:image" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ibtsam Ayyaz, QA Automation Engineer and SDET">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ibtsam Ayyaz · QA Automation Engineer / SDET">
+<meta name="twitter:description" content="Reliable test automation, CI and AI-assisted QA.">
+<meta name="twitter:image" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/social-preview.png">
 <meta name="theme-color" content="#05090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,6 +81,8 @@ section{display:flex;flex-direction:column;gap:24px}
 .caret{display:inline-block;width:.6ch;background:var(--signal);animation:blink 1s steps(1) infinite;margin-left:2px}
 @keyframes blink{50%{opacity:0}}
 .pitch{color:var(--muted);max-width:52ch;font-size:1.05rem}
+.recruiter-snapshot{font: .78rem/1.6 var(--mono);color:var(--muted);border-left:2px solid var(--signal);padding:7px 0 7px 12px;max-width:64ch}
+.recruiter-snapshot b{color:var(--fg)}
 .cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .hero-l{display:flex;flex-direction:column;gap:22px;min-width:0}
 .status{display:flex;flex-wrap:wrap;gap:8px}
@@ -134,6 +146,9 @@ section{display:flex;flex-direction:column;gap:24px}
 .stack span{font:.72rem var(--mono);border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--muted)}
 .case-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
 .demo-strip{padding:20px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:center}
+.demo-video{padding:18px;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:18px;align-items:center}
+.demo-video p{color:var(--muted)}
+.demo-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
 .demo-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0;padding:0;list-style:none}
 .demo-steps li{border:1px solid var(--line);border-radius:8px;padding:10px;font:.76rem/1.5 var(--mono);color:var(--muted)}
 .demo-steps b{display:block;color:var(--signal);margin-bottom:4px}
@@ -143,7 +158,7 @@ section{display:flex;flex-direction:column;gap:24px}
 .reliability{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .reliability article{padding:18px;display:flex;flex-direction:column;gap:8px}
 .reliability p{color:var(--muted);font-size:.9rem}
-@media (max-width:760px){.demo-strip{grid-template-columns:1fr}.demo-steps,.reliability{grid-template-columns:1fr}}
+@media (max-width:760px){.demo-strip,.demo-video{grid-template-columns:1fr}.demo-steps,.reliability{grid-template-columns:1fr}}
 @media (max-width:760px){.cases{grid-template-columns:minmax(0,1fr)}}
 .lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
 .lab .panel{padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -206,8 +221,10 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
       <h1>Ibtsam <span class="grad">Ayyaz</span></h1>
       <div class="rot" aria-live="polite"><span id="rot">I build <b>AI agents that write and fix tests.</b></span><span class="caret" aria-hidden="true">&nbsp;</span></div>
       <p class="pitch">Four-plus years making test suites that engineers trust: Playwright and Cypress in TypeScript, CI that finishes in minutes instead of hours, and AI-driven QA agents that plan, generate, triage and migrate tests.</p>
+      <p class="recruiter-snapshot"><b>Recruiter snapshot:</b> 4+ years · UI/API automation · Playwright &amp; TypeScript · Lahore · remote or relocation · 1-month notice</p>
       <div class="cta">
         <a class="btn primary" href="#demo">Watch the walkthrough</a>
+        <a class="btn" href="resume.pdf" download>Download résumé</a>
         <a class="btn" href="#work">Case studies</a>
         <a class="btn" href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio">GitHub repo</a>
         <a class="btn" href="report/">Live test report</a>
@@ -256,20 +273,21 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
         </svg><p class="arch-note">The page demonstrates seven connected stages; the wider suite also includes independent review, triage, conformance and release agents.</p>
       </div>
     </div>
+    <div class="panel demo-video rv"><div><span class="label">Screen recording · public demo</span><h3 style="font-size:1.25rem;margin:8px 0">See the pipeline run</h3><p>A 24-second capture of the interactive agent stages using the illustrative shift-swap scenario.</p><p style="font-size:.78rem;margin-top:8px">This is a recorded walkthrough of the portfolio demo, not a production client run.</p></div><video controls preload="metadata" poster="social-preview.png" aria-label="Screen recording of the AI QA agent pipeline"><source src="media/qa-agent-walkthrough.webm" type="video/webm">Your browser does not support WebM video. Use the interactive pipeline above.</video></div>
   </section>
 
   <section id="impact">
     <div class="head rv"><span class="label">Impact</span><h2>Before and after</h2><p>Reported outcomes across several projects; client details are withheld under NDA. Bars compare before and after within each measure.</p></div>
     <div class="metrics">
-      <article class="panel metric pre rv"><h3>Full regression runtime</h3><span class="big" data-count="30" data-suffix=" min">30 min</span>
+      <article class="panel metric pre rv"><h3>Full regression runtime</h3><span class="big" data-count="30" data-suffix=" min">30 min</span><p style="color:var(--muted);font-size:.84rem">Jenkins suite, split into independent parallel groups.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>3–4 h</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:14%"></div></div><span>~30 min</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Automated test coverage</h3><span class="big" data-count="7000" data-prefix="~">~7,000</span>
+      <article class="panel metric pre rv"><h3>Automated test coverage</h3><span class="big" data-count="7000" data-prefix="~">~7,000</span><p style="color:var(--muted);font-size:.84rem">Suite grew from 3,000 as product coverage expanded.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:43%"></div></div><span>3,000</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:100%"></div></div><span>~7,000</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Failing automated tests</h3><span class="big" data-count="80" data-prefix="~">~80</span>
+      <article class="panel metric pre rv"><h3>Failing automated tests</h3><span class="big" data-count="80" data-prefix="~">~80</span><p style="color:var(--muted);font-size:.84rem">Reduced through failure-by-failure test and data investigation.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>400+</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:20%"></div></div><span>~80</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Tickets per QA engineer per sprint</h3><span class="big" data-count="6" data-prefix="3–">3–6</span>
+      <article class="panel metric pre rv"><h3>Tickets per QA engineer per sprint</h3><span class="big" data-count="6" data-prefix="3–">3–6</span><p style="color:var(--muted);font-size:.84rem">Reported after the 14-agent QA workflow was introduced.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:33%"></div></div><span>1–2</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:100%"></div></div><span>3–6</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Regression recovery</h3><span class="big">4–5 h</span>
+      <article class="panel metric pre rv"><h3>Regression recovery</h3><span class="big">4–5 h</span><p style="color:var(--muted);font-size:.84rem">Xray failure list, database restore, then targeted reruns.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>1–1.5 d</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:25%"></div></div><span>4–5 h</span></div></div></article>
       <article class="panel metric pre rv"><h3>Cypress → Playwright migration</h3><span class="big" data-count="6" data-suffix=" days">6 days</span>
         <p style="color:var(--muted)">About 500 tests converted per day. Assertion-level mutation checks guarded the migration quality.</p></article>
@@ -302,7 +320,7 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
     <div class="cases" id="cases">
       <article class="panel case rv" data-k="ai"><div class="case-top"><h3>14-agent AI QA suite</h3><span class="tagx">1–2 → 3–6 tickets</span></div>
         <dl class="gdr"><dt>Given</dt><dd>QA capacity was the bottleneck at 1–2 tickets per person per sprint.</dd><dt>Built</dt><dd>A pipeline from feature exploration to test maintenance, plus PR review, triage, AC conformance, release impact and exploratory agents that read code and JIRA context.</dd><dt>Result</dt><dd class="r">Capacity rose to 3–6 tickets per person.</dd></dl>
-        <div class="stack"><span>Claude Code</span><span>Copilot</span><span>JIRA</span><span>Playwright</span></div><div class="case-links"><a href="#agents">Explore pipeline →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio#ai-test-agent">Agent details →</a><a href="ai-test-agent/sample-run.txt">Sample run →</a></div></article>
+        <div class="stack"><span>Claude Code</span><span>Copilot</span><span>JIRA</span><span>Playwright</span></div><div class="case-links"><a href="#agents">Explore pipeline →</a><a href="case-studies/cart-badge-agent.html">Read public case study →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio#ai-test-agent">Agent details →</a><a href="ai-test-agent/sample-run.txt">Sample run →</a></div></article>
       <article class="panel case rv" data-k="ai"><div class="case-top"><h3>Cypress → Playwright in six days</h3><span class="tagx">~500 tests/day</span></div>
         <dl class="gdr"><dt>Given</dt><dd>A large Cypress suite had to move to Playwright without losing what each test checked.</dd><dt>Built</dt><dd>A guarded migration agent that converted specs in batches and verified them with quality checks, including assertion-level mutation testing.</dd><dt>Result</dt><dd class="r">Whole suite migrated in six days.</dd></dl>
         <div class="stack"><span>Playwright</span><span>Cypress</span><span>TypeScript</span></div><div class="case-links"><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio#highlights-from-my-work">Migration and agent highlights →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/tree/main/mutation-testing">Mutation testing code →</a></div></article>

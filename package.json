@@ -15,6 +15,7 @@
     "mutate": "tsx mutation-testing/mutate-assertions.ts",
     "mcp": "tsx mcp-rerun-server/server.ts",
     "agent": "tsx ai-test-agent/agent.ts",
+    "build:portfolio-assets": "node scripts/build-portfolio-assets.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

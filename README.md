@@ -28,7 +28,11 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 
 | Folder | What it shows | Status |
 |---|---|---|
-| [`index.html`](index.html) | The portfolio site: live canvas background, simulated test run, interactive agent pipeline, mutation lab, command palette (Ctrl K) | Live |
+| [`index.html`](index.html) | The portfolio site: recruiter snapshot, impact metrics, recorded walkthrough, interactive agent pipeline, mutation lab and command palette (Ctrl K) | Live |
+| [`resume.pdf`](resume.pdf) | One-page résumé for download | Live |
+| [`social-preview.png`](social-preview.png) | Open Graph / social-sharing image | Live |
+| [`media/qa-agent-walkthrough.webm`](media/qa-agent-walkthrough.webm) | Screen recording of the illustrative pipeline demo | Live |
+| [`case-studies/cart-badge-agent.html`](case-studies/cart-badge-agent.html) | Public end-to-end case study: story → generated tests → acceptance-criteria report | Live |
 | [`ui-tests/`](ui-tests) | Playwright + TypeScript UI framework: Page Object Model, custom fixtures, data-driven logins from JSON, `@smoke` / `@regression` tags, money checks on checkout totals | Live |
 | [`api-tests/`](api-tests) | API tests with [zod](https://zod.dev) contracts, an auth-token fixture that creates and cleans up its own data, negative and security cases | Live |
 | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | 4-way sharded test runs, merged HTML report, type check, demo checks, Pages deploy of the site plus `/report` | Live |
@@ -46,6 +50,7 @@ npx playwright install chromium
 npm test                 # UI + API suites (20 tests)
 npm run test:smoke       # only @smoke
 npm run report           # open the HTML report
+npm run build:portfolio-assets # regenerate résumé PDF, social preview and demo recording
 ```
 
 ### Mutation testing
