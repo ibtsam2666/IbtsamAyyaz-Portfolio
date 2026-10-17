@@ -76,6 +76,25 @@ jobs:
       - run: npm ci
       - run: npx tsc --noEmit
 
+  demos:
+    name: Demos (MCP server, AI agent replay, mutation testing)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: MCP server answers over stdio
+        run: npx tsx mcp-rerun-server/smoke-client.ts
+      - name: AI test agent (recorded response)
+        run: npx tsx ai-test-agent/agent.ts ai-test-agent/stories/cart-badge.md --replay
+      - name: Mutation testing on the checkout spec
+        run: npx tsx mutation-testing/mutate-assertions.ts ui-tests/tests/checkout.spec.ts
+
   pages:
     name: Publish site and latest report
     needs: report
