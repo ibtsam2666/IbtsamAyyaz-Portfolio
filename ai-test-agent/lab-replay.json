@@ -1,11 +1,11 @@
 {
   "label": "illustrative-qa-agent-replay-v1",
   "stories": [
-    { "id": "S-01", "criteria": 5, "covered": 5, "validPassing": 5 },
-    { "id": "S-02", "criteria": 5, "covered": 5, "validPassing": 4 },
-    { "id": "S-03", "criteria": 5, "covered": 5, "validPassing": 4, "issue": "weak assertion" },
-    { "id": "S-04", "criteria": 5, "covered": 5, "validPassing": 5 },
-    { "id": "S-05", "criteria": 5, "covered": 3, "validPassing": 3, "issue": "missing criterion test" }
+    { "id": "S-01", "criteria": 5, "covered": 5, "validPassing": 5, "baselineCovered": 3, "baselinePassing": 3, "humanCovered": 5, "humanPassing": 5, "evidence": ["AC1–AC5 have tagged passing tests", "test titles map directly to story criteria"] },
+    { "id": "S-02", "criteria": 5, "covered": 5, "validPassing": 4, "baselineCovered": 4, "baselinePassing": 3, "humanCovered": 5, "humanPassing": 5, "issue": "one generated test failed", "evidence": ["AC1–AC5 mapped", "AC4 fails against expected total"] },
+    { "id": "S-03", "criteria": 5, "covered": 5, "validPassing": 4, "baselineCovered": 4, "baselinePassing": 3, "humanCovered": 5, "humanPassing": 5, "issue": "weak assertion", "evidence": ["AC4 assertion checks presence, not calculated value", "mutation survives the assertion"] },
+    { "id": "S-04", "criteria": 5, "covered": 5, "validPassing": 5, "baselineCovered": 4, "baselinePassing": 4, "humanCovered": 5, "humanPassing": 5, "evidence": ["AC1–AC5 mapped", "all generated checks pass in fixture replay"] },
+    { "id": "S-05", "criteria": 5, "covered": 3, "validPassing": 3, "baselineCovered": 2, "baselinePassing": 2, "humanCovered": 5, "humanPassing": 4, "issue": "missing criterion test", "evidence": ["AC4 and AC5 have no generated test", "story requests reload persistence and empty state"] }
   ],
   "triage": {
     "expectedTotal": 58.29,
@@ -16,6 +16,12 @@
     "browserHealthy": true,
     "failureOnlyBaseline": "possible flaky test"
   },
+  "triageCases": [
+    { "id": "product-bug", "label": "Product bug", "expected": "product defect", "httpStatus": 200, "reproductions": 3, "retries": 0, "browserHealthy": true, "valueMismatch": true, "signals": ["repeatable 3/3", "successful response", "healthy browser", "asserted value differs"] },
+    { "id": "flaky-test", "label": "Flaky test", "expected": "test instability", "httpStatus": 200, "reproductions": 1, "retries": 1, "browserHealthy": true, "valueMismatch": false, "signals": ["passes on retry", "non-deterministic timing", "no stable product mismatch"] },
+    { "id": "test-data", "label": "Test data issue", "expected": "test data", "httpStatus": 200, "reproductions": 3, "retries": 0, "browserHealthy": true, "valueMismatch": false, "dataFixtureInvalid": true, "signals": ["fixture uses expired account", "same input fails consistently", "control account passes"] },
+    { "id": "environment", "label": "Environment failure", "expected": "environment", "httpStatus": 503, "reproductions": 3, "retries": 2, "browserHealthy": false, "valueMismatch": false, "signals": ["service returns 503", "browser launch intermittently unavailable", "unrelated checks also fail"] }
+  ],
   "review": {
     "change": "cart badge AC5 reload assertion",
     "policyChecks": ["existing fixture", "acceptance criterion tag", "value assertion"],

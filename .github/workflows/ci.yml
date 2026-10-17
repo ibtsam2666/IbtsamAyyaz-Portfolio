@@ -94,6 +94,8 @@ jobs:
         run: npx tsx ai-test-agent/agent.ts ai-test-agent/stories/cart-badge.md --replay
       - name: AI QA evaluation lab replay
         run: node scripts/agent-lab-replay.mjs --scenario all
+      - name: AI QA lab HTML report export
+        run: node scripts/agent-lab-replay.mjs --scenario all --format html --out agent-lab-ci-report.html
       - name: Mutation testing on the checkout spec
         run: npx tsx mutation-testing/mutate-assertions.ts ui-tests/tests/checkout.spec.ts
 
@@ -119,9 +121,11 @@ jobs:
           cp index.html site/index.html
           mkdir -p site/ai-test-agent site/mutation-testing site/media site/case-studies
           cp ai-test-agent/sample-run.txt site/ai-test-agent/sample-run.txt
+          cp ai-test-agent/lab-replay.json site/ai-test-agent/lab-replay.json
           cp mutation-testing/sample-output.txt site/mutation-testing/sample-output.txt
           cp sample-failure-report.md site/sample-failure-report.md
           cp how-to-run.html site/how-to-run.html
+          cp how-ai-agents-work.html site/how-ai-agents-work.html
           cp agent-lab.html site/agent-lab.html
           cp resume.pdf social-preview.png site/
           cp media/qa-agent-walkthrough.webm site/media/qa-agent-walkthrough.webm

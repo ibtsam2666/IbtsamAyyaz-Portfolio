@@ -30,7 +30,8 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 |---|---|---|
 | [`index.html`](index.html) | The portfolio site: recruiter snapshot, impact metrics, recorded walkthrough, interactive agent pipeline, mutation lab and command palette (Ctrl K) | Live |
 | [`agent-lab.html`](agent-lab.html) | Six interactive QA scenarios: evaluation, failure triage, review gates, tool traces, bounded recovery, and cost/speed estimates | Replay, no API key |
-| [`ai-test-agent/lab-replay.json`](ai-test-agent/lab-replay.json) + [`scripts/agent-lab-replay.mjs`](scripts/agent-lab-replay.mjs) | Versioned replay corpus and CLI that computes evaluation/triage results, emits traces, enforces a non-executing review gate, and calculates estimate scenarios | `npm run agent:lab -- --scenario all` |
+| [`ai-test-agent/lab-replay.json`](ai-test-agent/lab-replay.json) + [`scripts/agent-lab-replay.mjs`](scripts/agent-lab-replay.mjs) | Versioned corpus and CLI with shared baseline/agent/human scoring, four triage patterns, audit decisions, evidence traces, and report export | `npm run agent:lab -- --scenario all` |
+| [`how-ai-agents-work.html`](how-ai-agents-work.html) | Architecture, evidence rubric, live/replay distinction, and safety boundaries for the demos | Read online |
 | [`resume.pdf`](resume.pdf) | General-purpose QA résumé PDF for download | Live |
 | [`social-preview.png`](social-preview.png) | Open Graph / social-sharing image | Live |
 | [`media/qa-agent-walkthrough.webm`](media/qa-agent-walkthrough.webm) | Screen recording of the illustrative pipeline demo | Live |
@@ -47,7 +48,9 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 
 For a concise, step-by-step setup and demo guide, see [`how-to-run.html`](how-to-run.html).
 
-For the interactive agent evaluation lab, open [`agent-lab.html`](agent-lab.html) directly or visit it from the portfolio. It uses illustrative replay data and requires no API key. Replay any scenario locally with `npm run agent:lab -- --scenario all`; the review decision can be explored with `npm run agent:lab -- --scenario review --decision approve` or `--decision changes`. These deterministic fixtures do not call a model or execute generated code.
+For the interactive agent evaluation lab, open [`agent-lab.html`](agent-lab.html) directly or visit it from the portfolio. It uses illustrative replay data and requires no API key. Replay locally with `npm run agent:lab -- --scenario all`; export JSON or HTML with `--format html --out agent-lab-report.html`. The browser lab also exports the selected scenario. Review decisions are local only and never execute generated code.
+
+For a live model run, set `ANTHROPIC_API_KEY` in your shell and run `npm run agent -- ai-test-agent/stories/cart-badge.md`. The agent writes a local `.run.json` with model, measured duration, provider input/output tokens and Playwright results. Set `AGENT_INPUT_USD_PER_MILLION` and `AGENT_OUTPUT_USD_PER_MILLION` if you want an estimated API cost using your own rates; without rates, cost remains unset. Replay mode records no model usage.
 
 Requires Node.js 20+.
 
