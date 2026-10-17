@@ -1,0 +1,27 @@
+
+▶ Story: Cart badge shows how many items are in the cart
+▶ Mode: replay (recorded model response)
+
+▶ Test plan
+  T1 [P1] AC1: adding a product increases the badge by one
+  T2 [P1] AC2: removing a product decreases the badge by one
+  T3 [P2] AC3: no badge when the cart is empty
+  T4 [P1] AC4: badge count matches the cart page
+  T5 [P2] AC5: count survives a reload
+
+▶ Wrote ai-test-agent\generated\cart-badge.spec.ts
+▶ Running it...
+  ✓ [AC1] adding a product increases the badge by one
+  ✓ [AC2] removing a product decreases the badge by one
+  ✓ [AC3] no badge when the cart is empty
+  ✓ [AC4] badge count matches the cart page
+  ✓ [AC5] count survives a reload
+
+▶ Coverage by acceptance criterion
+  AC1 ✓ covered  Adding a product from the inventory page increases the cart badge by one.
+  AC2 ✓ covered  Removing a product from the inventory page decreases the cart badge by one.
+  AC3 ✓ covered  When the cart is empty, no badge is shown.
+  AC4 ✓ covered  The badge count matches the number of items listed on the cart page.
+  AC5 ✓ covered  The count is kept when the shopper reloads the inventory page.
+
+▶ Every acceptance criterion has a passing test.
