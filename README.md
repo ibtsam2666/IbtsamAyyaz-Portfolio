@@ -29,7 +29,7 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | Folder | What it shows | Status |
 |---|---|---|
 | [`index.html`](index.html) | The portfolio site: recruiter snapshot, impact metrics, recorded walkthrough, interactive agent pipeline, mutation lab and command palette (Ctrl K) | Live |
-| [`resume.pdf`](resume.pdf) | One-page résumé for download | Live |
+| [`resume.pdf`](resume.pdf) | General-purpose QA résumé PDF for download | Live |
 | [`social-preview.png`](social-preview.png) | Open Graph / social-sharing image | Live |
 | [`media/qa-agent-walkthrough.webm`](media/qa-agent-walkthrough.webm) | Screen recording of the illustrative pipeline demo | Live |
 | [`case-studies/cart-badge-agent.html`](case-studies/cart-badge-agent.html) | Public end-to-end case study: story → generated tests → acceptance-criteria report | Live |
@@ -53,7 +53,7 @@ npx playwright install chromium
 npm test                 # UI + API suites (20 tests)
 npm run test:smoke       # only @smoke
 npm run report           # open the HTML report
-npm run build:portfolio-assets # regenerate résumé PDF, social preview and demo recording
+npm run build:portfolio-assets # regenerate social preview and demo recording
 ```
 
 ### Mutation testing

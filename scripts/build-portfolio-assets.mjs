@@ -3,7 +3,6 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { mkdirSync } from 'node:fs';
 import { dirname, extname, join, relative, resolve, sep } from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 const root = process.cwd();
 const port = 4178;
@@ -55,10 +54,6 @@ try {
   </style></head><body><div class="orb"></div><div class="content"><div class="eyebrow">QA Automation Engineer · SDET</div><h1>Ibtsam <span>Ayyaz</span></h1><p>Reliable test automation, CI and AI-assisted QA.</p><div class="chips"><span>PLAYWRIGHT</span><span>TYPESCRIPT</span><span>AI QA AGENTS</span></div><div class="url">Lahore, Pakistan · Open to remote and relocation</div></div></body></html>`);
   await preview.screenshot({ path: out('social-preview.png') });
 
-  const resume = await browser.newPage({ viewport: { width: 1000, height: 1200 } });
-  await resume.goto(pathToFileURL(out('resume.html')).href, { waitUntil: 'load' });
-  await resume.pdf({ path: out('resume.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
-
   const context = await browser.newContext({
     viewport: { width: 1280, height: 720 },
     deviceScaleFactor: 1,
@@ -71,7 +66,7 @@ try {
   const video = page.video();
   await context.close();
   await video.saveAs(out('media/qa-agent-walkthrough.webm'));
-  console.log('Built resume.pdf, social-preview.png and media/qa-agent-walkthrough.webm');
+  console.log('Built social-preview.png and media/qa-agent-walkthrough.webm. resume.pdf is maintained as a supplied document.');
 } finally {
   await browser.close();
   await new Promise((ok) => server.close(ok));
