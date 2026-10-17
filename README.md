@@ -29,6 +29,7 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | Folder | What it shows | Status |
 |---|---|---|
 | [`index.html`](index.html) | The portfolio site: recruiter snapshot, impact metrics, recorded walkthrough, interactive agent pipeline, mutation lab and command palette (Ctrl K) | Live |
+| [`agent-lab.html`](agent-lab.html) | Six interactive AI QA scenarios: evaluation, failure triage, review gates, tool traces, bounded recovery, and cost/speed estimates | Replay, no API key |
 | [`resume.pdf`](resume.pdf) | General-purpose QA résumé PDF for download | Live |
 | [`social-preview.png`](social-preview.png) | Open Graph / social-sharing image | Live |
 | [`media/qa-agent-walkthrough.webm`](media/qa-agent-walkthrough.webm) | Screen recording of the illustrative pipeline demo | Live |
@@ -44,6 +45,8 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 ## Run it
 
 For a concise, step-by-step setup and demo guide, see [`how-to-run.html`](how-to-run.html).
+
+For the interactive agent evaluation lab, open [`agent-lab.html`](agent-lab.html) directly or visit it from the portfolio. It uses illustrative replay data and requires no API key.
 
 Requires Node.js 20+.
 
