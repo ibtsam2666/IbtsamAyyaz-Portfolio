@@ -1,0 +1,50 @@
+{
+  "label": "illustrative-qa-agent-replay-v1",
+  "stories": [
+    { "id": "S-01", "criteria": 5, "covered": 5, "validPassing": 5 },
+    { "id": "S-02", "criteria": 5, "covered": 5, "validPassing": 4 },
+    { "id": "S-03", "criteria": 5, "covered": 5, "validPassing": 4, "issue": "weak assertion" },
+    { "id": "S-04", "criteria": 5, "covered": 5, "validPassing": 5 },
+    { "id": "S-05", "criteria": 5, "covered": 3, "validPassing": 3, "issue": "missing criterion test" }
+  ],
+  "triage": {
+    "expectedTotal": 58.29,
+    "actualTotal": 57.29,
+    "httpStatus": 200,
+    "reproductions": 3,
+    "retries": 0,
+    "browserHealthy": true,
+    "failureOnlyBaseline": "possible flaky test"
+  },
+  "review": {
+    "change": "cart badge AC5 reload assertion",
+    "policyChecks": ["existing fixture", "acceptance criterion tag", "value assertion"],
+    "executionEnabled": false
+  },
+  "trace": [
+    { "tool": "read_story", "durationMs": 2, "result": "five acceptance criteria loaded" },
+    { "tool": "read_file", "durationMs": 3, "result": "shop fixture and inventory page object loaded" },
+    { "tool": "plan_tests", "durationMs": 1800, "result": "one test mapped per criterion" },
+    { "tool": "write_spec", "durationMs": 4, "result": "criterion-tagged spec generated" },
+    { "tool": "run_playwright", "durationMs": 18400, "result": "5 passed, 0 failed, 0 retried" },
+    { "tool": "map_coverage", "durationMs": 8, "result": "AC1–AC5 mapped" }
+  ],
+  "recovery": {
+    "maxAttempts": 2,
+    "attempts": [
+      { "number": 1, "ok": false, "diagnosis": "stale text locator", "evidence": "DOM has data-test=shopping-cart-badge" },
+      { "number": 2, "ok": true, "diagnosis": "reused existing page-object locator", "evidence": "focused assertion observed count 1" }
+    ],
+    "changedFiles": ["generated test only"]
+  },
+  "economics": {
+    "manualMinutes": 35,
+    "replaySeconds": 19,
+    "liveSeconds": 25,
+    "assumedInputTokens": 3500,
+    "assumedOutputTokens": 1800,
+    "assumedInputUsdPerMillion": 3,
+    "assumedOutputUsdPerMillion": 15,
+    "currencyNote": "Illustrative rates only; not a current vendor quote or measured invoice."
+  }
+}

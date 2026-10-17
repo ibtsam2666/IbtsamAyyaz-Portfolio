@@ -92,6 +92,8 @@ jobs:
         run: npx tsx mcp-rerun-server/smoke-client.ts
       - name: AI test agent (recorded response)
         run: npx tsx ai-test-agent/agent.ts ai-test-agent/stories/cart-badge.md --replay
+      - name: AI QA evaluation lab replay
+        run: node scripts/agent-lab-replay.mjs --scenario all
       - name: Mutation testing on the checkout spec
         run: npx tsx mutation-testing/mutate-assertions.ts ui-tests/tests/checkout.spec.ts
 
