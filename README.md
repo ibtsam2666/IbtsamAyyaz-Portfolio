@@ -33,6 +33,7 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | [`social-preview.png`](social-preview.png) | Open Graph / social-sharing image | Live |
 | [`media/qa-agent-walkthrough.webm`](media/qa-agent-walkthrough.webm) | Screen recording of the illustrative pipeline demo | Live |
 | [`case-studies/cart-badge-agent.html`](case-studies/cart-badge-agent.html) | Public end-to-end case study: story → generated tests → acceptance-criteria report | Live |
+| [`how-to-run.html`](how-to-run.html) | Short setup guide for tests, the AI agent replay, mutation testing and MCP demo | Live |
 | [`ui-tests/`](ui-tests) | Playwright + TypeScript UI framework: Page Object Model, custom fixtures, data-driven logins from JSON, `@smoke` / `@regression` tags, money checks on checkout totals | Live |
 | [`api-tests/`](api-tests) | API tests with [zod](https://zod.dev) contracts, an auth-token fixture that creates and cleans up its own data, negative and security cases | Live |
 | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | 4-way sharded test runs, merged HTML report, type check, demo checks, Pages deploy of the site plus `/report` | Live |
@@ -41,6 +42,8 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | [`ai-test-agent/`](ai-test-agent) | An agent that turns a user story into a test plan and a Playwright spec, runs it, and reports acceptance criteria with no passing test ([sample run](ai-test-agent/sample-run.txt)) | Live |
 
 ## Run it
+
+For a concise, step-by-step setup and demo guide, see [`how-to-run.html`](how-to-run.html).
 
 Requires Node.js 20+.
 

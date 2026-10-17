@@ -119,6 +119,7 @@ jobs:
           cp ai-test-agent/sample-run.txt site/ai-test-agent/sample-run.txt
           cp mutation-testing/sample-output.txt site/mutation-testing/sample-output.txt
           cp sample-failure-report.md site/sample-failure-report.md
+          cp how-to-run.html site/how-to-run.html
           cp resume.pdf social-preview.png site/
           cp media/qa-agent-walkthrough.webm site/media/qa-agent-walkthrough.webm
           cp case-studies/cart-badge-agent.html site/case-studies/cart-badge-agent.html
