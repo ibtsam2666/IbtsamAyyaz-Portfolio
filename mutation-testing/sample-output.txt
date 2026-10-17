@@ -1,0 +1,10 @@
+
+Mutation run: mutation-testing/examples/weak-assertions.spec.ts (2 mutants, project ui)
+
+Baseline: running the original spec...
+ 1. KILLED   line 13 (change number): await expect(checkout.cartItems).toHaveCount(2);
+ 2. SURVIVED line 15 (change text): await expect(checkout.total).toHaveText('MUTATED Total: $32.39');
+
+Mutation score: 50% (1/2 killed)
+Survivors point at assertions to strengthen:
+  line 15: await expect(checkout.total).toHaveText('Total: $32.39');

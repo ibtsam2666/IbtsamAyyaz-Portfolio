@@ -21,7 +21,8 @@ export default defineConfig({
   projects: [
     {
       name: 'ui',
-      testDir: './ui-tests/tests',
+      testDir: '.',
+      testMatch: ['ui-tests/tests/**/*.spec.ts', 'mutation-testing/examples/**/*.spec.ts', '**/__mutant__.*.spec.ts', 'ai-test-agent/generated/**/*.spec.ts'],
       use: { ...devices['Desktop Chrome'], baseURL: 'https://www.saucedemo.com', testIdAttribute: 'data-test' },
     },
     {
