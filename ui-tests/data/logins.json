@@ -1,0 +1,7 @@
+[
+  { "case": "standard user signs in", "username": "standard_user", "password": "secret_sauce", "expect": "inventory" },
+  { "case": "locked-out user is blocked", "username": "locked_out_user", "password": "secret_sauce", "expect": "Epic sadface: Sorry, this user has been locked out." },
+  { "case": "wrong password is rejected", "username": "standard_user", "password": "wrong_password", "expect": "Epic sadface: Username and password do not match any user in this service" },
+  { "case": "missing username is rejected", "username": "", "password": "secret_sauce", "expect": "Epic sadface: Username is required" },
+  { "case": "missing password is rejected", "username": "standard_user", "password": "", "expect": "Epic sadface: Password is required" }
+]
