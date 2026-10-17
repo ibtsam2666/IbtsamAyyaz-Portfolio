@@ -113,7 +113,12 @@ jobs:
           name: html-report
           path: site/report
       - name: Assemble site
-        run: cp index.html site/index.html
+        run: |
+          cp index.html site/index.html
+          mkdir -p site/ai-test-agent site/mutation-testing
+          cp ai-test-agent/sample-run.txt site/ai-test-agent/sample-run.txt
+          cp mutation-testing/sample-output.txt site/mutation-testing/sample-output.txt
+          cp sample-failure-report.md site/sample-failure-report.md
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
