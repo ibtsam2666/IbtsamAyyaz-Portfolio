@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "playwright-rerun": {
+      "command": "npx",
+      "args": ["tsx", "mcp-rerun-server/server.ts"]
+    }
+  }
+}
