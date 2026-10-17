@@ -1,259 +1,444 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Ibtsam Ayyaz, QA Automation Engineer / SDET: AI QA agents, Playwright and Cypress automation, CI speed-ups.">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Ibtsam Ayyaz · QA Automation</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Ibtsam Ayyaz, QA Automation Engineer / SDET. AI QA agents, Playwright and Cypress automation, parallel CI, mutation testing.">
+<meta property="og:title" content="Ibtsam Ayyaz · QA Automation Engineer / SDET">
+<meta property="og:description" content="AI QA agents, Playwright and Cypress in TypeScript, CI runtime cut from 3–4 hours to 30 minutes.">
+<meta name="theme-color" content="#05090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
-/* Layout: a single reading column framed like a test-run report; the hero is the run summary, each case study is a "spec" with given / did / result. */
+/* Layout: a dark "mission console". A live canvas network sits behind one reading column;
+   each section is a console panel. Accent = signal cyan (runs), pass = lime, flake = amber. */
 :root{
-  --paper:#f3f5f4; --surface:#ffffff; --ink:#15201c; --muted:#56635d; --line:#d6ddd9;
-  --pass:#16794a; --pass-soft:#e1f1e8; --flake:#a8640a; --flake-soft:#f7ecd9; --term:#0f1714; --term-fg:#d5e4dc;
-  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body:"Public Sans", "Segoe UI", system-ui, sans-serif;
-  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --bg:#05090b; --bg2:#0a1215; --panel:rgba(14,24,28,.72); --panel-solid:#0e181c; --line:rgba(120,200,210,.16); --line-strong:rgba(120,220,230,.38);
+  --fg:#e7f2f1; --muted:#8fa7a8; --dim:#5d7476;
+  --signal:#3ee6ff; --pass:#9cff57; --flake:#ffb547; --fail:#ff5f6d;
+  --glow:0 0 0 1px var(--line-strong), 0 10px 40px -12px rgba(62,230,255,.35);
+  --display:"Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0e1412; --surface:#151d1a; --ink:#e6eee9; --muted:#9aaba3; --line:#26332e;
-  --pass:#4cc488; --pass-soft:#163326; --flake:#e3a548; --flake-soft:#33270f; --term:#070b09; --term-fg:#cfe0d6; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#0e1412; --surface:#151d1a; --ink:#e6eee9; --muted:#9aaba3; --line:#26332e;
-  --pass:#4cc488; --pass-soft:#163326; --flake:#e3a548; --flake-soft:#33270f; --term:#070b09; --term-fg:#cfe0d6; color-scheme:dark}
-
+:root[data-theme="light"]{
+  --bg:#eef4f4; --bg2:#e2ecec; --panel:rgba(255,255,255,.8); --panel-solid:#ffffff; --line:rgba(20,70,80,.16); --line-strong:rgba(10,110,130,.4);
+  --fg:#0b1a1d; --muted:#466064; --dim:#6f8a8d;
+  --signal:#007f99; --pass:#2f8a12; --flake:#a8650a; --fail:#c22a3a;
+  --glow:0 0 0 1px var(--line-strong), 0 10px 30px -14px rgba(0,127,153,.35);
+  color-scheme:light;
+}
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
-.wrap{max-width:860px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:56px}
-a{color:var(--pass);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--pass);outline-offset:3px;border-radius:4px}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
-h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-0.02em}
-h2{font-size:1.6rem;font-weight:700}
-h3{font-size:1.2rem;font-weight:700}
-p{margin:0;max-width:65ch}
-.label{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-
-/* Hero */
-header{display:flex;flex-direction:column;gap:20px}
-.role{font-size:1.15rem;color:var(--muted);max-width:60ch}
-.role strong{color:var(--ink);font-weight:600}
-.links{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-size:.95rem}
-.run{background:var(--term);color:var(--term-fg);border-radius:10px;padding:20px 22px;font-family:var(--mono);font-size:.86rem;line-height:1.75;overflow-x:auto}
-.run .dim{opacity:.6}
-.run .ok{color:#59d394}
-.run .warn{color:#e8b25a}
-.run b{color:#fff;font-weight:600}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
-.stat .n{font-family:var(--display);font-size:1.7rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
-.stat .d{font-size:.85rem;color:var(--muted)}
-@media (max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-
-/* Sections */
-section{display:flex;flex-direction:column;gap:20px}
-.sec-head{display:flex;flex-direction:column;gap:6px}
-
-/* Case studies as specs */
-.specs{display:flex;flex-direction:column;gap:16px}
-.spec{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px 22px;display:flex;flex-direction:column;gap:12px}
-.spec-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
-.chip{font-family:var(--mono);font-size:.75rem;padding:3px 9px;border-radius:999px;background:var(--pass-soft);color:var(--pass);white-space:nowrap}
-.chip.amber{background:var(--flake-soft);color:var(--flake)}
-.gdr{display:grid;grid-template-columns:72px minmax(0,1fr);gap:6px 14px;font-size:.95rem}
-.gdr dt{font-family:var(--mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
-.gdr dd{margin:0}
-.result{font-weight:600}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-family:var(--mono);font-size:.75rem;border:1px solid var(--line);border-radius:4px;padding:2px 7px;color:var(--muted)}
-
-/* Pipeline */
-.pipe{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--mono);font-size:.8rem}
-.pipe span{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
-.pipe i{font-style:normal;color:var(--muted)}
-
-/* Toolkit */
-.kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px}
-.kit div{display:flex;flex-direction:column;gap:4px;min-width:0;border-top:1px solid var(--line);padding-top:10px}
-.kit p{font-size:.95rem}
-@media (max-width:640px){.kit{grid-template-columns:minmax(0,1fr)}}
-
-/* Experience */
-.xp{display:flex;flex-direction:column;gap:0}
-.job{display:grid;grid-template-columns:170px minmax(0,1fr);gap:4px 20px;padding-block:16px;border-top:1px solid var(--line)}
-.job:last-child{border-bottom:1px solid var(--line)}
-.when{font-family:var(--mono);font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}
-.job p{font-size:.95rem;color:var(--muted)}
-@media (max-width:640px){.job{grid-template-columns:minmax(0,1fr)}}
-
-/* Approach */
-.steps{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px;max-width:65ch}
-
-/* Contact */
-.contact{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px;display:flex;flex-direction:column;gap:14px}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.addr{font-family:var(--mono);font-size:.95rem;user-select:all;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:6px 10px;word-break:break-all}
-button{font:600 .9rem var(--body);background:var(--ink);color:var(--paper);border:0;border-radius:6px;padding:8px 14px;cursor:pointer}
-.note{font-size:.88rem;color:var(--muted)}
-footer{font-size:.82rem;color:var(--muted)}
-@media (prefers-reduced-motion:no-preference){.spec{transition:border-color .2s}.spec:hover{border-color:var(--pass)}}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);overflow-x:hidden}
+#net{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.9}
+.scan{position:fixed;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(62,230,255,.025) 3px 4px)}
+:root[data-theme="light"] .scan{display:none}
+a{color:var(--signal);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.05;text-wrap:balance;letter-spacing:.01em}
+p{margin:0}
+.mono{font-family:var(--mono)}
+.label{font:500 .72rem/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--signal)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:16px;padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.logo{font:700 1rem var(--display);letter-spacing:.08em;color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:10px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--pass);box-shadow:0 0 12px var(--pass);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+.nav{display:flex;gap:18px;margin-left:auto;font:500 .85rem var(--mono)}
+.nav a{color:var(--muted);text-decoration:none}
+.nav a:hover,.nav a.on{color:var(--fg)}
+.btn{font:600 .82rem var(--mono);border:1px solid var(--line-strong);background:var(--panel);color:var(--fg);border-radius:8px;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{box-shadow:var(--glow)}
+.btn.primary{background:var(--signal);color:#021014;border-color:transparent}
+kbd{font:500 .7rem var(--mono);border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--muted)}
+@media (max-width:760px){.nav{display:none}.bar .btn kbd{display:none}}
+main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding-block:48px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:96px}
+section{display:flex;flex-direction:column;gap:24px}
+.head{display:flex;flex-direction:column;gap:10px;max-width:70ch}
+.head h2{font-size:clamp(1.8rem,4vw,2.6rem)}
+.head p{color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;min-height:min(640px,78vh)}
+.hero h1{font-size:clamp(2.8rem,8vw,5.2rem);font-weight:700}
+.hero h1 .grad{background:linear-gradient(90deg,var(--signal),var(--pass));-webkit-background-clip:text;background-clip:text;color:transparent}
+.rot{font:500 clamp(1rem,2.2vw,1.25rem) var(--mono);color:var(--muted);min-height:1.6em}
+.rot b{color:var(--fg);font-weight:500}
+.caret{display:inline-block;width:.6ch;background:var(--signal);animation:blink 1s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.pitch{color:var(--muted);max-width:52ch;font-size:1.05rem}
+.cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hero-l{display:flex;flex-direction:column;gap:22px;min-width:0}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font:500 .74rem var(--mono);border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted);background:var(--panel)}
+.pill i{font-style:normal;color:var(--pass)}
+@media (max-width:860px){.hero{grid-template-columns:minmax(0,1fr);min-height:0}}
+.term{overflow:hidden;box-shadow:var(--glow);min-width:0}
+.term-top{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font:500 .75rem var(--mono);color:var(--dim)}
+.term-top span{width:10px;height:10px;border-radius:50%;background:var(--line-strong)}
+.term-top .t{margin-left:8px;font-weight:500}
+.term-body{padding:16px 16px 10px;font:400 .82rem/1.75 var(--mono);height:300px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+.term-body .ln{white-space:pre-wrap;word-break:break-word}
+.ok{color:var(--pass)} .fl{color:var(--flake)} .sg{color:var(--signal)} .dm{color:var(--dim)} .fa{color:var(--fail)}
+.prog{margin:0 16px 14px;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--signal),var(--pass));transition:width .3s}
+.term-foot{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.term-foot div{padding:10px 14px;display:flex;flex-direction:column;gap:2px;border-right:1px solid var(--line)}
+.term-foot div:last-child{border-right:0}
+.term-foot b{font:700 1.1rem var(--display);font-variant-numeric:tabular-nums}
+.term-foot small{font:.68rem var(--mono);color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.metric{padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.metric h3{font-size:1.05rem}
+.bars{display:flex;flex-direction:column;gap:8px}
+.br{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:10px;align-items:center;font:.78rem var(--mono);color:var(--muted)}
+.track{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.fill{height:100%;border-radius:99px;width:var(--w);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.metric.pre .fill.after{width:0}
+.fill.before{background:var(--dim)} .fill.after{background:linear-gradient(90deg,var(--signal),var(--pass))}
+.metric .big{font:700 1.8rem var(--display);color:var(--pass);font-variant-numeric:tabular-nums}
+@media (max-width:760px){.metrics{grid-template-columns:minmax(0,1fr)}}
+.pipe{padding:22px;display:flex;flex-direction:column;gap:20px}
+.stages{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.stage{appearance:none;border:1px solid var(--line);background:var(--panel-solid);color:var(--muted);border-radius:10px;padding:12px 8px;font:600 .74rem/1.3 var(--mono);text-align:center;cursor:pointer;min-width:0}
+.stage .n{display:block;font:700 1.1rem var(--display);color:var(--dim);margin-bottom:4px}
+.stage.on{color:var(--fg);border-color:var(--signal);box-shadow:var(--glow)}
+.stage.on .n,.stage.done .n{color:var(--signal)}
+.stage.done{color:var(--fg)}
+.stage-out{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.stage-out h3{font-size:1.25rem;margin-bottom:6px}
+.stage-out p{color:var(--muted)}
+.artifact{font:.78rem/1.6 var(--mono);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0;white-space:pre-wrap;overflow:auto;max-height:220px;color:var(--fg)}
+.pipe-ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.indep{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:860px){.stages{grid-template-columns:repeat(4,minmax(0,1fr))}.stage-out{grid-template-columns:minmax(0,1fr)}}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 .78rem var(--mono);border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{color:#021014;background:var(--signal);border-color:transparent}
+.cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.case{padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:transform .25s,box-shadow .25s,border-color .25s}
+.case:hover{transform:translateY(-3px);box-shadow:var(--glow);border-color:var(--line-strong)}
+.case-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.case h3{font-size:1.2rem}
+.tagx{font:600 .7rem var(--mono);padding:3px 8px;border-radius:6px;white-space:nowrap;background:color-mix(in srgb,var(--pass) 16%,transparent);color:var(--pass)}
+.tagx.amb{background:color-mix(in srgb,var(--flake) 16%,transparent);color:var(--flake)}
+.gdr{display:grid;grid-template-columns:62px minmax(0,1fr);gap:6px 12px;font-size:.93rem;margin:0}
+.gdr dt{font:600 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding-top:4px}
+.gdr dd{margin:0;color:var(--muted)}
+.gdr dd.r{color:var(--fg);font-weight:500}
+.stack{display:flex;flex-wrap:wrap;gap:6px}
+.stack span{font:.72rem var(--mono);border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--muted)}
+@media (max-width:760px){.cases{grid-template-columns:minmax(0,1fr)}}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.lab .panel{padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.code{font:.8rem/1.7 var(--mono);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0;overflow-x:auto;white-space:pre}
+.code .mut{background:color-mix(in srgb,var(--flake) 22%,transparent);color:var(--flake);border-radius:3px}
+.toggle{display:flex;gap:8px;flex-wrap:wrap}
+.verdict{font:600 .9rem var(--mono);padding:10px 12px;border-radius:8px;border:1px solid var(--line)}
+.verdict.good{color:var(--pass);border-color:color-mix(in srgb,var(--pass) 40%,transparent)}
+.verdict.bad{color:var(--fail);border-color:color-mix(in srgb,var(--fail) 40%,transparent)}
+@media (max-width:860px){.lab{grid-template-columns:minmax(0,1fr)}}
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sk{padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.sk ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.sk li{font:.78rem var(--mono);padding:4px 9px;border-radius:6px;background:var(--bg2);border:1px solid var(--line)}
+@media (max-width:860px){.skills{grid-template-columns:minmax(0,1fr)}}
+.tl{position:relative;display:flex;flex-direction:column;gap:14px;padding-left:22px}
+.tl:before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--signal),var(--pass),transparent)}
+.job{padding:18px;position:relative;display:flex;flex-direction:column;gap:6px}
+.job:before{content:"";position:absolute;left:-22px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--signal)}
+.when{font:.78rem var(--mono);color:var(--signal)}
+.job p{color:var(--muted)}
+.contact{padding:28px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:center;box-shadow:var(--glow)}
+.contact h2{font-size:clamp(1.8rem,4vw,2.4rem)}
+.contact p{color:var(--muted)}
+.copyrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.addr{font:.92rem var(--mono);user-select:all;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;word-break:break-all}
+@media (max-width:760px){.contact{grid-template-columns:minmax(0,1fr)}}
+footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);color:var(--dim);padding-block:24px 40px;padding-left:16px;padding-right:16px}
+.cmdk{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-start;justify-content:center;padding-top:12vh;padding-left:16px;padding-right:16px;background:color-mix(in srgb,var(--bg) 60%,transparent);backdrop-filter:blur(6px)}
+.cmdk-box{width:min(560px,100%);background:var(--panel-solid);border:1px solid var(--line-strong);border-radius:14px;box-shadow:var(--glow);overflow:hidden}
+.cmdk input{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--fg);font:500 1rem var(--mono);padding:16px 18px;outline:none}
+.cmdk ul{list-style:none;margin:0;padding:8px;max-height:320px;overflow:auto}
+.cmdk li{padding:10px 12px;border-radius:8px;font:.9rem var(--mono);color:var(--muted);cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.cmdk li[aria-selected="true"]{background:color-mix(in srgb,var(--signal) 14%,transparent);color:var(--fg)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;font:.85rem var(--mono);background:var(--panel-solid);border:1px solid var(--line-strong);border-radius:10px;padding:10px 14px;box-shadow:var(--glow)}
+[hidden]{display:none!important}
+.rv{transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.lift{transform:translateY(14px)}
 </style>
 </head>
 <body>
+<canvas id="net" aria-hidden="true"></canvas>
+<div class="scan" aria-hidden="true"></div>
 
-<div class="wrap">
-  <header>
-    <span class="label">QA Automation Engineer · SDET · Lahore, Pakistan</span>
-    <h1>Ibtsam Ayyaz</h1>
-    <p class="role">I build test automation that engineers trust: <strong>Playwright and Cypress in TypeScript</strong>, fast CI pipelines, and <strong>AI-driven QA agents</strong> that plan, write, triage and migrate tests. Open to remote roles and to relocation with visa sponsorship.</p>
-    <div class="links">
-      <a href="https://www.linkedin.com/in/ibtsamayyaz/">LinkedIn</a>
-      <a href="#work">Selected work</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <div class="run" role="img" aria-label="A summary of a regression run: about 7,000 tests in about 30 minutes, with automated failures down from over 400 to about 80.">
-      <div><span class="dim">$</span> npx playwright test --project=regression --shard=all</div>
-      <div><span class="dim">Running</span> <b>~7,000 tests</b> <span class="dim">across independent parallel groups</span></div>
-      <div><span class="ok">✓</span> regression suite grew from 3,000 to ~7,000 tests</div>
-      <div><span class="ok">✓</span> full-suite runtime: 3–4 h → <b>~30 min</b></div>
-      <div><span class="warn">!</span> automated failures: 400+ → <b>~80</b> after flaky-test fixes</div>
-      <div><span class="ok">✓</span> regression recovery: 1–1.5 days → <b>~4–5 h</b></div>
-    </div>
-  </header>
-
-  <div class="stats" aria-label="Key numbers">
-    <div class="stat"><span class="n">4+ yrs</span><span class="d">QA automation since July 2021</span></div>
-    <div class="stat"><span class="n">~7,000</span><span class="d">automated tests maintained</span></div>
-    <div class="stat"><span class="n">14</span><span class="d">AI QA agents built or contributed to</span></div>
-    <div class="stat"><span class="n">~39</span><span class="d">release cycles tested end to end</span></div>
+<header class="bar">
+  <div class="bar-in">
+    <a class="logo" href="#top"><span class="dot" aria-hidden="true"></span>IBTSAM.AYYAZ</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#impact">impact</a><a href="#agents">agents</a><a href="#work">work</a><a href="#lab">lab</a><a href="#stack">stack</a><a href="#contact">contact</a>
+    </nav>
+    <button class="btn" id="openCmd" type="button" aria-label="Open command palette" style="margin-left:auto">Search <kbd>Ctrl K</kbd></button>
+    <button class="btn" id="theme" type="button" aria-label="Switch light or dark theme">◐</button>
   </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero-l">
+      <span class="label">QA Automation Engineer · SDET · Lahore, PK</span>
+      <h1>Ibtsam <span class="grad">Ayyaz</span></h1>
+      <div class="rot" aria-live="polite"><span id="rot">I build <b>AI agents that write and fix tests.</b></span><span class="caret" aria-hidden="true">&nbsp;</span></div>
+      <p class="pitch">Four-plus years making test suites that engineers trust: Playwright and Cypress in TypeScript, CI that finishes in minutes instead of hours, and AI-driven QA agents that plan, generate, triage and migrate tests.</p>
+      <div class="cta">
+        <a class="btn primary" href="#work">See the work</a>
+        <a class="btn" href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio">GitHub repo</a>
+        <a class="btn" href="https://www.linkedin.com/in/ibtsamayyaz/">LinkedIn</a>
+      </div>
+      <div class="status">
+        <span class="pill"><i>●</i> open to remote roles</span>
+        <span class="pill"><i>●</i> relocation with visa sponsorship</span>
+        <span class="pill">notice: 1 month</span>
+      </div>
+    </div>
+    <div class="panel term" aria-label="Simulated regression run">
+      <div class="term-top"><span></span><span></span><span></span><b class="t">regression · 8 workers · chromium</b></div>
+      <div class="term-body" id="termBody"></div>
+      <div class="prog"><i id="prog"></i></div>
+      <div class="term-foot">
+        <div><b id="cPass" class="ok">0</b><small>passed</small></div>
+        <div><b id="cFlaky" class="fl">0</b><small>flaky</small></div>
+        <div><b id="cTime" class="sg">0m</b><small>elapsed</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="impact">
+    <div class="head rv"><span class="label">Impact</span><h2>Before and after</h2><p>Measured results from my work on a U.S. workforce and payroll platform.</p></div>
+    <div class="metrics">
+      <article class="panel metric pre rv"><h3>Full regression runtime</h3><span class="big" data-count="30" data-suffix=" min">30 min</span>
+        <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>3–4 h</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:14%"></div></div><span>~30 min</span></div></div></article>
+      <article class="panel metric pre rv"><h3>Automated test coverage</h3><span class="big" data-count="7000" data-prefix="~">~7,000</span>
+        <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:43%"></div></div><span>3,000</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:100%"></div></div><span>~7,000</span></div></div></article>
+      <article class="panel metric pre rv"><h3>Failing automated tests</h3><span class="big" data-count="80" data-prefix="~">~80</span>
+        <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>400+</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:20%"></div></div><span>~80</span></div></div></article>
+      <article class="panel metric pre rv"><h3>Tickets per QA engineer per sprint</h3><span class="big" data-count="6" data-prefix="3–">3–6</span>
+        <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:33%"></div></div><span>1–2</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:100%"></div></div><span>3–6</span></div></div></article>
+    </div>
+  </section>
+
+  <section id="agents">
+    <div class="head rv"><span class="label">AI QA agents</span><h2>A seven-agent pipeline that adds test coverage</h2><p>Part of a 14-agent suite I built and contributed to. Step through it, or press play.</p></div>
+    <div class="panel pipe rv">
+      <div class="stages" id="stages" role="tablist" aria-label="Pipeline stages"></div>
+      <div class="stage-out"><div><h3 id="stTitle"></h3><p id="stText"></p></div><pre class="artifact" id="stArt" aria-label="Example output of this stage"></pre></div>
+      <div class="pipe-ctrl">
+        <button class="btn primary" id="play" type="button">▶ Play pipeline</button>
+        <button class="btn" id="prev" type="button">← Prev</button>
+        <button class="btn" id="next" type="button">Next →</button>
+        <span class="mono" style="color:var(--dim);font-size:.78rem">Independent agents:</span>
+        <div class="indep"><span class="pill">PR Reviewer</span><span class="pill">Triage</span><span class="pill">AC Conformance</span><span class="pill">Release Impact</span><span class="pill">Exploratory</span></div>
+      </div>
+    </div>
+  </section>
 
   <section id="work">
-    <div class="sec-head">
-      <span class="label">Selected work</span>
-      <h2>What I built and what changed</h2>
-      <p class="note">Client and employer code stays private. These summaries describe the problem, the approach and the measured result.</p>
+    <div class="head rv"><span class="label">Selected work</span><h2>Case studies</h2><p>Client code stays private under NDA. Each card shows the problem, what I built and the measured result.</p></div>
+    <div class="filters" role="group" aria-label="Filter case studies">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" type="button" data-f="ai" aria-pressed="false">AI agents</button>
+      <button class="chip" type="button" data-f="ci" aria-pressed="false">CI &amp; speed</button>
+      <button class="chip" type="button" data-f="rel" aria-pressed="false">Reliability</button>
     </div>
-    <div class="specs">
-      <article class="spec">
-        <div class="spec-top"><h3>An AI-driven QA agent suite</h3><span class="chip">14 agents</span></div>
-        <dl class="gdr">
-          <dt>Given</dt><dd>QA capacity was the bottleneck: each tester could take 1–2 tickets per sprint through planning, testing and sign-off.</dd>
-          <dt>Did</dt><dd>Built and contributed to a 14-agent suite. A seven-agent pipeline adds new coverage end to end, and five independent agents handle PR review, triage, acceptance-criteria conformance, release impact and exploratory testing. Agents read repository code and JIRA context to draft test plans and risk reports, then run the tests; QA reviews the results.</dd>
-          <dt>Result</dt><dd class="result">Team capacity rose from 1–2 to 3–6 tickets per person, depending on complexity.</dd>
-        </dl>
-        <div class="pipe" aria-label="Pipeline order"><span>Feature Explorer</span><i>→</i><span>Test Planner</span><i>→</i><span>Investigator</span><i>→</i><span>Generator</span><i>→</i><span>Executor</span><i>→</i><span>Analyzer</span><i>→</i><span>Maintenance</span></div>
-        <div class="tags"><span class="tag">Claude Code</span><span class="tag">GitHub Copilot</span><span class="tag">JIRA</span><span class="tag">Playwright</span></div>
-      </article>
-
-      <article class="spec">
-        <div class="spec-top"><h3>Cypress-to-Playwright migration in six days</h3><span class="chip">~500 tests / day</span></div>
-        <dl class="gdr">
-          <dt>Given</dt><dd>A large Cypress suite needed to move to Playwright without losing what the tests actually checked.</dd>
-          <dt>Did</dt><dd>Built a guarded migration agent that converted specs in batches, then verified each migrated test with quality checks, including assertion-level mutation testing.</dd>
-          <dt>Result</dt><dd class="result">The full suite migrated in six days, at about 500 tests per day.</dd>
-        </dl>
-        <div class="tags"><span class="tag">Playwright</span><span class="tag">Cypress</span><span class="tag">TypeScript</span><span class="tag">AI agents</span></div>
-      </article>
-
-      <article class="spec">
-        <div class="spec-top"><h3>Mutation testing for assertions</h3><span class="chip amber">tests the tests</span></div>
-        <dl class="gdr">
-          <dt>Given</dt><dd>A green test is only useful if it would fail when the behaviour breaks.</dd>
-          <dt>Did</dt><dd>Wrote a mutation-testing agent that creates a separate mutated copy of a test for each assertion and checks that the test fails at that exact assertion.</dd>
-          <dt>Result</dt><dd class="result">Weak or always-passing assertions are caught before they reach the regression suite.</dd>
-        </dl>
-        <div class="tags"><span class="tag">Mutation testing</span><span class="tag">Node.js</span></div>
-      </article>
-
-      <article class="spec">
-        <div class="spec-top"><h3>Faster CI and one-step failure reruns</h3><span class="chip">3–4 h → 30 min</span></div>
-        <dl class="gdr">
-          <dt>Given</dt><dd>A full regression run took 3–4 hours in Jenkins, and recovering from a failed run took two people 1–1.5 days.</dd>
-          <dt>Did</dt><dd>Split the suite into independent parallel groups after validating data, login and test dependencies. Built Node.js utilities and Jenkins retry workflows that read Xray failures, restore the right test databases and rerun only the failed tests. Added an MCP server that reruns failed specs by Xray ID in parallel terminals and posts live pass/fail status to the JIRA ticket.</dd>
-          <dt>Result</dt><dd class="result">Runtime fell to about 30 minutes, recovery to about 4–5 hours, and manual testing effort dropped by about 20 hours per sprint.</dd>
-        </dl>
-        <div class="tags"><span class="tag">Jenkins</span><span class="tag">Xray</span><span class="tag">MCP</span><span class="tag">SQL Server</span></div>
-      </article>
-
-      <article class="spec">
-        <div class="spec-top"><h3>Regression growth and flaky-test reduction</h3><span class="chip amber">400+ → ~80 failures</span></div>
-        <dl class="gdr">
-          <dt>Given</dt><dd>A workforce and payroll platform with a 3,000-test Cypress suite and more than 400 failing tests.</dd>
-          <dt>Did</dt><dd>Investigated failures one by one, fixed unstable tests and data setup, and kept adding coverage as features shipped, using Page Object Model, reusable utilities and JSON-driven execution.</dd>
-          <dt>Result</dt><dd class="result">The suite grew to about 7,000 tests while failures dropped to about 80 in the first year.</dd>
-        </dl>
-        <div class="tags"><span class="tag">Cypress</span><span class="tag">Playwright</span><span class="tag">Page Object Model</span></div>
-      </article>
+    <div class="cases" id="cases">
+      <article class="panel case rv" data-k="ai"><div class="case-top"><h3>14-agent AI QA suite</h3><span class="tagx">1–2 → 3–6 tickets</span></div>
+        <dl class="gdr"><dt>Given</dt><dd>QA capacity was the bottleneck at 1–2 tickets per person per sprint.</dd><dt>Built</dt><dd>A pipeline from feature exploration to test maintenance, plus PR review, triage, AC conformance, release impact and exploratory agents that read code and JIRA context.</dd><dt>Result</dt><dd class="r">Capacity rose to 3–6 tickets per person.</dd></dl>
+        <div class="stack"><span>Claude Code</span><span>Copilot</span><span>JIRA</span><span>Playwright</span></div></article>
+      <article class="panel case rv" data-k="ai"><div class="case-top"><h3>Cypress → Playwright in six days</h3><span class="tagx">~500 tests/day</span></div>
+        <dl class="gdr"><dt>Given</dt><dd>A large Cypress suite had to move to Playwright without losing what each test checked.</dd><dt>Built</dt><dd>A guarded migration agent that converted specs in batches and verified them with quality checks, including assertion-level mutation testing.</dd><dt>Result</dt><dd class="r">Whole suite migrated in six days.</dd></dl>
+        <div class="stack"><span>Playwright</span><span>Cypress</span><span>TypeScript</span></div></article>
+      <article class="panel case rv" data-k="ci"><div class="case-top"><h3>Parallel CI</h3><span class="tagx">3–4 h → 30 min</span></div>
+        <dl class="gdr"><dt>Given</dt><dd>A full Jenkins regression run took 3–4 hours.</dd><dt>Built</dt><dd>Split execution into independent groups after validating data, login and test dependencies.</dd><dt>Result</dt><dd class="r">Runtime cut to about 30 minutes; about 20 hours of manual testing saved per sprint.</dd></dl>
+        <div class="stack"><span>Jenkins</span><span>Node.js</span><span>Cypress</span></div></article>
+      <article class="panel case rv" data-k="ci ai"><div class="case-top"><h3>MCP server for failed-test reruns</h3><span class="tagx">1.5 days → 4–5 h</span></div>
+        <dl class="gdr"><dt>Given</dt><dd>Recovering a failed regression took two people 1–1.5 days of one-by-one reruns.</dd><dt>Built</dt><dd>Retry workflows that read Xray failures and restore test databases, plus an MCP server that reruns specs by Xray ID in parallel and posts live status to JIRA.</dd><dt>Result</dt><dd class="r">Recovery cut to about 4–5 hours.</dd></dl>
+        <div class="stack"><span>MCP</span><span>Xray</span><span>Jenkins</span><span>SQL Server</span></div></article>
+      <article class="panel case rv" data-k="rel"><div class="case-top"><h3>Flaky-test reduction</h3><span class="tagx amb">400+ → ~80 failing</span></div>
+        <dl class="gdr"><dt>Given</dt><dd>A 3,000-test suite with more than 400 failing tests.</dd><dt>Built</dt><dd>Investigated failures one by one, fixed unstable tests and test data, and kept adding coverage with Page Object Model and data-driven tests.</dd><dt>Result</dt><dd class="r">Suite grew to ~7,000 tests while failures fell to ~80 in a year.</dd></dl>
+        <div class="stack"><span>Cypress</span><span>Playwright</span><span>POM</span></div></article>
+      <article class="panel case rv" data-k="rel"><div class="case-top"><h3>Data checks behind the UI</h3><span class="tagx amb">caught pre-release</span></div>
+        <dl class="gdr"><dt>Given</dt><dd>A shift crossing midnight showed correct hours in the app.</dd><dt>Found</dt><dd>Comparing the UI with payroll data in SQL showed the shift split across two days, breaking overtime.</dd><dt>Result</dt><dd class="r">Fixed before release; overnight-shift regression tests added.</dd></dl>
+        <div class="stack"><span>SQL</span><span>Mobile</span><span>Payroll</span></div></article>
     </div>
   </section>
 
-  <section>
-    <div class="sec-head"><span class="label">How I work</span><h2>Deciding what to test first</h2></div>
-    <ol class="steps">
-      <li>Read the ticket, the acceptance criteria and the code change to see what the feature touches.</li>
-      <li>Rank risk by user impact and likelihood: the core path, money or data that could be wrong, integrations and permissions, shared code that changed.</li>
-      <li>Test those areas end to end and check the data behind the UI with SQL. One overnight shift that crossed midnight looked right on screen but split across two days in the database, which broke the overtime calculation.</li>
-      <li>Then edge cases, cross-browser and device checks, and targeted regression around the change. Stable, repeatable checks get automated.</li>
-    </ol>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="label">Toolkit</span><h2>What I use day to day</h2></div>
-    <div class="kit">
-      <div><span class="label">Automation</span><p>Playwright, Cypress, TypeScript, JavaScript, Node.js, Page Object Model, data-driven tests</p></div>
-      <div><span class="label">API and data</span><p>REST APIs, Postman, OpenAPI contract testing, SQL, Microsoft SQL Server, MySQL</p></div>
-      <div><span class="label">CI and quality ops</span><p>Jenkins, GitHub, parallel execution, JIRA, Xray, Confluence</p></div>
-      <div><span class="label">AI-assisted testing</span><p>Claude Code, GitHub Copilot, AI QA agents, MCP server development, mutation testing</p></div>
-      <div><span class="label">Testing practice</span><p>Regression, smoke, integration, functional and exploratory testing; Android and iOS testing; Agile</p></div>
-      <div><span class="label">Domains</span><p>Workforce management and payroll, financial trading workflows, biometric time-clock devices</p></div>
+  <section id="lab">
+    <div class="head rv"><span class="label">Mutation lab</span><h2>Does your test actually catch the bug?</h2><p>My mutation-testing agent breaks one assertion at a time and checks the test fails. Try it on this checkout test.</p></div>
+    <div class="lab">
+      <div class="panel rv">
+        <div class="toggle" role="group" aria-label="Choose a mutation">
+          <button class="chip" type="button" data-m="none" aria-pressed="true">Original</button>
+          <button class="chip" type="button" data-m="strong" aria-pressed="false">Mutate total</button>
+          <button class="chip" type="button" data-m="weak" aria-pressed="false">Weak assertion</button>
+        </div>
+        <pre class="code" id="code"></pre>
+      </div>
+      <div class="panel rv"><span class="label">Result</span><pre class="code" id="labOut" style="white-space:pre-wrap"></pre><div class="verdict" id="verdict"></div></div>
     </div>
   </section>
 
-  <section>
-    <div class="sec-head"><span class="label">Experience</span><h2>Where I've worked</h2></div>
-    <div class="xp">
-      <div class="job"><span class="when">Nov 2024 – now</span><div><h3>QA Automation Engineer II · TCP Software</h3><p>Workforce and payroll systems for U.S. clients: Playwright and Cypress frameworks, AI QA agents, Jenkins CI, API and SQL validation, Android and iOS testing.</p></div></div>
-      <div class="job"><span class="when">Jul 2021 – Jul 2024</span><div><h3>SQA Engineer · TECHVERX</h3><p>Financial trading workflows for a U.S. client: Cypress framework with data-driven tests, Postman API testing, SQL Server data validation, about 39 release cycles.</p></div></div>
-      <div class="job"><span class="when">2017 – 2021</span><div><h3>BS Computer Science · COMSATS University Islamabad</h3></div></div>
+  <section id="stack">
+    <div class="head rv"><span class="label">Stack</span><h2>Tools I use daily</h2></div>
+    <div class="skills">
+      <div class="panel sk rv"><span class="label">Automation</span><ul><li>Playwright</li><li>Cypress</li><li>TypeScript</li><li>JavaScript</li><li>Node.js</li><li>Page Object Model</li></ul></div>
+      <div class="panel sk rv"><span class="label">AI-assisted QA</span><ul><li>Claude Code</li><li>GitHub Copilot</li><li>QA agents</li><li>MCP servers</li><li>Mutation testing</li></ul></div>
+      <div class="panel sk rv"><span class="label">API &amp; data</span><ul><li>REST</li><li>Postman</li><li>OpenAPI contracts</li><li>SQL</li><li>SQL Server</li><li>MySQL</li></ul></div>
+      <div class="panel sk rv"><span class="label">CI &amp; tracking</span><ul><li>Jenkins</li><li>GitHub</li><li>Parallel runs</li><li>JIRA</li><li>Xray</li><li>Confluence</li></ul></div>
+      <div class="panel sk rv"><span class="label">Practice</span><ul><li>Regression</li><li>Smoke</li><li>Integration</li><li>Exploratory</li><li>Android &amp; iOS</li><li>Agile</li></ul></div>
+      <div class="panel sk rv"><span class="label">Domains</span><ul><li>Workforce &amp; payroll</li><li>Trading workflows</li><li>Biometric devices</li></ul></div>
+    </div>
+    <div class="tl">
+      <div class="panel job rv"><span class="when">Nov 2024 – now</span><h3>QA Automation Engineer II · TCP Software</h3><p>Workforce and payroll systems for U.S. clients.</p></div>
+      <div class="panel job rv"><span class="when">Jul 2021 – Jul 2024</span><h3>SQA Engineer · TECHVERX</h3><p>Financial trading workflows for a U.S. client, about 39 release cycles.</p></div>
+      <div class="panel job rv"><span class="when">2017 – 2021</span><h3>BS Computer Science · COMSATS University Islamabad</h3></div>
     </div>
   </section>
 
   <section id="contact">
-    <div class="contact">
-      <span class="label">Contact</span>
-      <h2>Hiring for QA automation?</h2>
-      <p>I'm available after a one-month notice period, for remote work (including U.S. hours) or relocation with visa sponsorship.</p>
-      <div class="row">
-        <span class="addr" id="email">ibtsamayyaz01@gmail.com</span>
-        <button type="button" id="copy">Copy email</button>
-        <span class="note" id="copied" aria-live="polite"></span>
+    <div class="panel contact rv">
+      <div><span class="label">Contact</span><h2>Need tests your team can trust?</h2><p>Available after a one-month notice period, remote (U.S. hours fine) or relocating with visa sponsorship.</p></div>
+      <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+        <div class="copyrow"><span class="addr" id="email">ibtsamayyaz01@gmail.com</span><button class="btn primary" id="copy" type="button">Copy email</button></div>
+        <div class="copyrow"><a class="btn" href="https://www.linkedin.com/in/ibtsamayyaz/">LinkedIn</a><a class="btn" href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio">GitHub</a></div>
       </div>
-      <p class="note">Or message me on <a href="https://www.linkedin.com/in/ibtsamayyaz/">LinkedIn</a>.</p>
     </div>
   </section>
+</main>
+<footer>© Ibtsam Ayyaz · plain HTML, CSS and canvas · press <kbd>Ctrl K</kbd></footer>
 
-  <footer>Ibtsam Ayyaz · QA Automation Engineer / SDET · Lahore, Pakistan</footer>
+<div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="cmdk-box"><input id="cmdIn" type="text" placeholder="Jump to… (try: agents, lab, email)" aria-label="Search commands"><ul id="cmdList" role="listbox"></ul></div>
 </div>
+<div class="toast" id="toast" hidden role="status"></div>
 
 <script>
-document.getElementById('copy').addEventListener('click', function () {
-  var text = document.getElementById('email').textContent;
-  var out = document.getElementById('copied');
-  function fallback() {
-    var r = document.createRange(); r.selectNodeContents(document.getElementById('email'));
-    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-    out.textContent = 'Selected. Press Ctrl+C to copy.';
+(function(){
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const toast = m => { const t=$('#toast'); t.textContent=m; t.hidden=false; clearTimeout(t._h); t._h=setTimeout(()=>t.hidden=true,1800); };
+const root=document.documentElement;
+try{ const s=localStorage.getItem('theme'); if(s) root.dataset.theme=s; }catch(e){}
+$('#theme').onclick=()=>{ root.dataset.theme = root.dataset.theme==='light'?'dark':'light'; try{localStorage.setItem('theme',root.dataset.theme)}catch(e){} };
+
+const cv=$('#net'), cx=cv.getContext('2d'); let W,H,nodes=[],mouse={x:-999,y:-999};
+function size(){ const d=devicePixelRatio||1; W=cv.width=innerWidth*d; H=cv.height=innerHeight*d;
+  const n=Math.min(90,Math.round(innerWidth*innerHeight/16000)); nodes=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25*d,vy:(Math.random()-.5)*.25*d,p:Math.random()})); }
+addEventListener('resize',size); size();
+addEventListener('pointermove',e=>{const d=devicePixelRatio||1; mouse.x=e.clientX*d; mouse.y=e.clientY*d;});
+const col=v=>getComputedStyle(root).getPropertyValue(v).trim();
+function draw(){
+  const sig=col('--signal'), pass=col('--pass'), d=devicePixelRatio||1, R=140*d;
+  cx.clearRect(0,0,W,H);
+  for(const a of nodes){ a.x+=a.vx; a.y+=a.vy; if(a.x<0||a.x>W)a.vx*=-1; if(a.y<0||a.y>H)a.vy*=-1; a.p=(a.p+.004)%1; }
+  for(let i=0;i<nodes.length;i++){ const a=nodes[i];
+    for(let j=i+1;j<nodes.length;j++){ const b=nodes[j], dist=Math.hypot(a.x-b.x,a.y-b.y);
+      if(dist<R){ cx.strokeStyle=sig; cx.globalAlpha=(1-dist/R)*.18; cx.lineWidth=d; cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y); cx.stroke(); } }
+    const near=Math.hypot(a.x-mouse.x,a.y-mouse.y)<R*1.2;
+    cx.globalAlpha=near?.95:.45; cx.fillStyle=(a.p>.92||near)?pass:sig; cx.beginPath(); cx.arc(a.x,a.y,(near?2.6:1.6)*d,0,7); cx.fill();
+    if(near){ cx.globalAlpha=.25; cx.strokeStyle=pass; cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(mouse.x,mouse.y); cx.stroke(); }
   }
-  try {
-    navigator.clipboard.writeText(text).then(function () { out.textContent = 'Copied'; }, fallback);
-  } catch (e) { fallback(); }
-});
+  cx.globalAlpha=1; if(!reduce) requestAnimationFrame(draw);
+}
+draw();
+
+const roles=['I build <b>AI agents that write and fix tests.</b>','I cut CI from <b>3–4 hours to 30 minutes.</b>','I turn <b>400+ failing tests into ~80.</b>','I test <b>the data behind the UI.</b>'];
+let ri=0; if(!reduce) setInterval(()=>{ ri=(ri+1)%roles.length; $('#rot').innerHTML=roles[ri]; },3200);
+
+const specs=['auth/login.spec.ts','timesheet/clock-in.spec.ts','payroll/overtime.spec.ts','schedule/shift-swap.spec.ts','leave/approvals.spec.ts','reports/export.spec.ts','api/employees.contract.ts','mobile/geo-attendance.spec.ts','settings/roles.spec.ts','payroll/overnight-shift.spec.ts'];
+const tb=$('#termBody');
+function line(h){ const d=document.createElement('div'); d.className='ln'; d.innerHTML=h; tb.appendChild(d); while(tb.children.length>12) tb.removeChild(tb.firstChild); }
+function run(){
+  tb.innerHTML=''; let pass=0, flaky=0, k=0; const total=40; $('#prog').style.width='0%';
+  line('<span class="dm">$</span> npx playwright test --project=regression --workers=8');
+  line('<span class="sg">Running 7,000 tests using 8 workers</span>');
+  const iv=setInterval(()=>{
+    k++; const s=specs[k%specs.length], ms=(Math.random()*2.2+.4).toFixed(1), isFlaky=k%13===0;
+    pass+=175; if(isFlaky) flaky++;
+    line(isFlaky ? `<span class="fl">↻ ${s}</span> <span class="dm">passed on retry · trace saved</span>` : `<span class="ok">✓</span> ${s} <span class="dm">(${ms}s)</span>`);
+    $('#cPass').textContent=Math.min(pass,7000).toLocaleString(); $('#cFlaky').textContent=flaky; $('#cTime').textContent=Math.round(k*30/total)+'m';
+    $('#prog').style.width=(k/total*100)+'%';
+    if(k>=total){ clearInterval(iv); $('#cPass').textContent='7,000';
+      line(`<span class="ok">  7,000 passed</span>  <span class="fl">${flaky} flaky</span>  <span class="dm">(30m 04s)</span>`);
+      line('<span class="dm">  HTML report → playwright-report/index.html</span>');
+      setTimeout(run,4200); }
+  }, reduce?20:260);
+}
+run();
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target; io.unobserve(el); el.classList.remove('lift');
+  if(el.classList.contains('pre')){ el.classList.remove('pre'); const big=el.querySelector('[data-count]');
+    if(big && !reduce){ const to=+big.dataset.count, pre=big.dataset.prefix||'', suf=big.dataset.suffix||''; let st=null;
+      const step=ts=>{ st=st||ts; const p=Math.min(1,(ts-st)/1200), v=Math.round(to*(1-Math.pow(1-p,3))); big.textContent=pre+v.toLocaleString()+suf; if(p<1) requestAnimationFrame(step); };
+      requestAnimationFrame(step); } }
+}),{threshold:.2});
+$$('.rv').forEach(el=>{ if(!reduce && el.getBoundingClientRect().top>innerHeight) el.classList.add('lift'); io.observe(el); });
+setTimeout(()=>$$('.metric.pre').forEach(m=>{ if(m.getBoundingClientRect().top<innerHeight) m.classList.remove('pre'); }),400);
+
+const ST=[
+ ['Feature Explorer','Reads the ticket, acceptance criteria and changed code, then maps the screens, APIs and data the feature touches.','feature: Shift swap approval\ntouches:\n  ui   /schedule/swaps\n  api  POST /api/swaps/{id}/approve\n  db   shift_swaps, schedules\nrisks: permissions, overlapping shifts'],
+ ['Test Planner','Turns that map into a risk-ranked test plan: happy paths first, then data, permissions and edge cases.','P1 manager approves swap → both schedules update\nP1 employee cannot approve own swap (403)\nP2 swap across midnight keeps correct hours\nP3 approve already-cancelled swap → error toast'],
+ ['Test Investigator','Checks existing coverage and test data so new tests reuse fixtures instead of duplicating them.','existing: schedule.fixture.ts (reuse)\nmissing: swap seed data → add seedSwap()\nduplicate risk: none'],
+ ['Test Generator','Writes Playwright specs in the team style: Page Object Model, fixtures, data-driven where it helps.',"test('manager approves swap', async ({ swaps, api }) => {\n  const swap = await api.seedSwap();\n  await swaps.open(swap.id);\n  await swaps.approve();\n  await expect(swaps.status).toHaveText('Approved');\n});"],
+ ['Test Executor','Runs the new specs in parallel against the test environment and captures traces for anything that fails.','4 tests · 4 workers\n✓ manager approves swap (3.1s)\n✓ employee cannot approve own swap (1.4s)\n✗ swap across midnight keeps hours\n✓ cancelled swap shows error (1.9s)'],
+ ['Test Analyzer','Separates product bugs from test bugs, reads the trace and files a clear report.','✗ swap across midnight keeps hours\nverdict: PRODUCT BUG\nexpected 8.0h, got 3.0h + 5.0h on two days\n→ JIRA: steps, SQL query, trace link'],
+ ['Test Maintenance','Keeps the suite healthy over time: updates locators, removes duplicates and re-verifies with mutation testing.','updated 2 locators after UI change\nmutation check: 4/4 assertions caught\nsuite status: green, 0 flaky']
+];
+const sw=$('#stages'); let cur=0, timer=null;
+ST.forEach((s,i)=>{ const b=document.createElement('button'); b.className='stage'; b.type='button'; b.setAttribute('role','tab'); b.innerHTML=`<span class="n">${String(i+1).padStart(2,'0')}</span>${s[0]}`; b.onclick=()=>{stop();show(i)}; sw.appendChild(b); });
+function show(i){ cur=i; $$('.stage').forEach((b,j)=>{ b.classList.toggle('on',j===i); b.classList.toggle('done',j<i); b.setAttribute('aria-selected',j===i); });
+  $('#stTitle').textContent=ST[i][0]; $('#stText').textContent=ST[i][1]; $('#stArt').textContent=ST[i][2]; }
+function stop(){ clearInterval(timer); timer=null; $('#play').textContent='▶ Play pipeline'; }
+$('#play').onclick=()=>{ if(timer){stop();return;} $('#play').textContent='❚❚ Pause'; show(0); timer=setInterval(()=>{ if(cur>=ST.length-1){stop();return;} show(cur+1); },2600); };
+$('#next').onclick=()=>{stop();show(Math.min(ST.length-1,cur+1))}; $('#prev').onclick=()=>{stop();show(Math.max(0,cur-1))};
+show(0);
+
+$$('.filters .chip').forEach(c=>c.onclick=()=>{ $$('.filters .chip').forEach(x=>x.setAttribute('aria-pressed',x===c)); const f=c.dataset.f;
+  const apply=()=>$$('#cases .case').forEach(a=>a.hidden = f!=='all' && !a.dataset.k.split(' ').includes(f));
+  (document.startViewTransition && !reduce) ? document.startViewTransition(apply) : apply(); });
+
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const L={
+ none:{code:["test('order total includes tax', async ({ cart }) => {","  await cart.add('Backpack', 29.99);","  await cart.checkout();","  await expect(cart.total).toHaveText('$32.39');","});"],hl:-1,out:"✓ order total includes tax (1.2s)\n\n1 passed",v:['good','Baseline: the test passes on correct code.']},
+ strong:{code:["test('order total includes tax', async ({ cart }) => {","  await cart.add('Backpack', 29.99);","  await cart.checkout();","  await expect(cart.total).toHaveText('$29.99'); // mutated","});"],hl:3,out:"✗ order total includes tax\n  Expected: \"$29.99\"\n  Received: \"$32.39\"\n\n1 failed · mutation KILLED",v:['good','Mutation caught: this assertion really protects the total.']},
+ weak:{code:["test('order total includes tax', async ({ cart }) => {","  await cart.add('Backpack', 29.99);","  await cart.checkout();","  await expect(cart.total).toBeVisible(); // weak","});"],hl:3,out:"✓ order total includes tax (1.1s)\n\n1 passed · mutation SURVIVED",v:['bad','Mutation survived: the test passes whatever the total is, so it is flagged for a stronger assertion.']}
+};
+function lab(m){ const d=L[m]; $('#code').innerHTML=d.code.map((l,i)=>i===d.hl?`<span class="mut">${esc(l)}</span>`:esc(l)).join('\n'); $('#labOut').textContent=d.out; const v=$('#verdict'); v.className='verdict '+d.v[0]; v.textContent=d.v[1];
+  $$('#lab .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.m===m)); }
+$$('#lab .chip').forEach(c=>c.onclick=()=>lab(c.dataset.m)); lab('none');
+
+function selectEmail(){ const r=document.createRange(); r.selectNodeContents($('#email')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast('Selected: press Ctrl+C'); }
+function copyEmail(){ const t=$('#email').textContent; try{ navigator.clipboard.writeText(t).then(()=>toast('Email copied'),selectEmail); }catch(e){ selectEmail(); } }
+$('#copy').onclick=copyEmail;
+
+const navIo=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) $$('.nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)); }),{rootMargin:'-45% 0px -50% 0px'});
+$$('main section[id]').forEach(s=>navIo.observe(s));
+
+const CMDS=[['Impact: before and after','#impact'],['AI agent pipeline','#agents'],['Case studies','#work'],['Mutation lab','#lab'],['Stack and experience','#stack'],['Contact','#contact'],['Copy email',copyEmail],['Toggle theme',()=>$('#theme').click()],['Play agent pipeline',()=>{location.hash='agents';$('#play').click();}],['Open GitHub repo','https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio'],['Open LinkedIn','https://www.linkedin.com/in/ibtsamayyaz/']];
+const ck=$('#cmdk'), ci=$('#cmdIn'), cl=$('#cmdList'); let sel=0, shown=CMDS;
+function render(){ const q=ci.value.toLowerCase(); shown=CMDS.filter(c=>c[0].toLowerCase().includes(q)); sel=Math.min(sel,Math.max(0,shown.length-1));
+  cl.innerHTML=shown.map((c,i)=>`<li role="option" aria-selected="${i===sel}" data-i="${i}">${c[0]}<span>${typeof c[1]==='function'?'run':c[1][0]==='#'?'jump':'open'}</span></li>`).join('') || '<li>No match</li>'; }
+function close(){ ck.hidden=true; }
+function exec(c){ close(); if(!c) return; const a=c[1]; if(typeof a==='function') a(); else if(a[0]==='#') location.hash=a.slice(1); else location.href=a; }
+function open(){ ck.hidden=false; ci.value=''; sel=0; render(); ci.focus(); }
+$('#openCmd').onclick=open;
+addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault(); ck.hidden?open():close();} else if(!ck.hidden){
+  if(e.key==='Escape') close(); else if(e.key==='ArrowDown'){sel=Math.min(shown.length-1,sel+1);render();e.preventDefault();} else if(e.key==='ArrowUp'){sel=Math.max(0,sel-1);render();e.preventDefault();} else if(e.key==='Enter') exec(shown[sel]); } });
+ci.oninput=()=>{sel=0;render();}; cl.onclick=e=>{ const li=e.target.closest('li[data-i]'); if(li) exec(shown[+li.dataset.i]); }; ck.onclick=e=>{ if(e.target===ck) close(); };
+})();
 </script>
 </body>
 </html>
