@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ibtsam Ayyaz · QA Automation</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="description" content="Ibtsam Ayyaz, QA Automation Engineer / SDET. AI QA agents, Playwright and Cypress automation, parallel CI, mutation testing.">
 <meta property="og:title" content="Ibtsam Ayyaz · QA Automation Engineer / SDET">
 <meta property="og:description" content="Reliable test automation, CI and AI-assisted QA. Playwright · TypeScript · QA agents.">
@@ -27,7 +28,7 @@
 :root{
   --bg:#05090b; --bg2:#0a1215; --panel:rgba(14,24,28,.72); --panel-solid:#0e181c; --line:rgba(120,200,210,.16); --line-strong:rgba(120,220,230,.38);
   --fg:#e7f2f1; --muted:#8fa7a8; --dim:#809597;
-  --signal:#3ee6ff; --pass:#9cff57; --flake:#ffb547; --fail:#ff5f6d;
+  --signal:#3ee6ff; --on-signal:#021014; --pass:#9cff57; --flake:#ffb547; --fail:#ff5f6d;
   --glow:0 0 0 1px var(--line-strong), 0 10px 40px -12px rgba(62,230,255,.35);
   --display:"Chakra Petch", "Segoe UI", system-ui, sans-serif;
   --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
@@ -37,7 +38,7 @@
 :root[data-theme="light"]{
   --bg:#eef4f4; --bg2:#e2ecec; --panel:rgba(255,255,255,.8); --panel-solid:#ffffff; --line:rgba(20,70,80,.16); --line-strong:rgba(10,110,130,.4);
   --fg:#0b1a1d; --muted:#466064; --dim:#567176;
-  --signal:#00677c; --pass:#26760d; --flake:#8b5100; --fail:#c22a3a;
+  --signal:#00677c; --on-signal:#ffffff; --pass:#1d5f08; --flake:#8b5100; --fail:#c22a3a;
   --glow:0 0 0 1px var(--line-strong), 0 10px 30px -14px rgba(0,127,153,.35);
   color-scheme:light;
 }
@@ -70,13 +71,13 @@ p{margin:0}
 .route-progress i{display:block;width:100%;height:0;background:linear-gradient(var(--signal),var(--pass));transform-origin:top;transition:height .15s linear}
 .route-link{position:relative;z-index:1;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--panel-solid);color:var(--muted);text-decoration:none;font:500 .58rem var(--mono);transition:transform .2s,border-color .2s,background .2s,color .2s}
 .route-link:hover,.route-link:focus-visible{transform:scale(1.12);border-color:var(--signal);color:var(--fg)}
-.route-link[aria-current="location"]{background:var(--signal);border-color:var(--signal);color:#021014;box-shadow:0 0 16px color-mix(in srgb,var(--signal) 55%,transparent);transform:scale(1.14)}
+.route-link[aria-current="location"]{background:var(--signal);border-color:var(--signal);color:var(--on-signal);box-shadow:0 0 16px color-mix(in srgb,var(--signal) 55%,transparent);transform:scale(1.14)}
 .route-link:after{content:attr(data-label);position:absolute;right:36px;top:50%;transform:translateY(-50%) translateX(5px);white-space:nowrap;pointer-events:none;opacity:0;background:var(--panel-solid);border:1px solid var(--line-strong);border-radius:7px;padding:5px 9px;color:var(--fg);font:500 .72rem var(--mono);transition:opacity .15s,transform .15s}
 .route-link:hover:after,.route-link:focus-visible:after{opacity:1;transform:translateY(-50%) translateX(0)}
 .route-mobile{display:none}
 .btn{font:600 .82rem var(--mono);border:1px solid var(--line-strong);background:var(--panel);color:var(--fg);border-radius:8px;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .btn:hover{box-shadow:var(--glow)}
-.btn.primary{background:var(--signal);color:#021014;border-color:transparent}
+.btn.primary{background:var(--signal);color:var(--on-signal);border-color:transparent}
 kbd{font:500 .7rem var(--mono);border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--muted)}
 @media (max-width:1179px){.nav{display:none}}
 @media (max-width:760px){.bar .btn kbd{display:none}}
@@ -144,7 +145,7 @@ section{display:flex;flex-direction:column;gap:24px}
 @media (max-width:860px){.stages{grid-template-columns:repeat(4,minmax(0,1fr))}.stage-out{grid-template-columns:minmax(0,1fr)}}
 .filters{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font:500 .78rem var(--mono);border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;cursor:pointer}
-.chip[aria-pressed="true"]{color:#021014;background:var(--signal);border-color:transparent}
+.chip[aria-pressed="true"]{color:var(--on-signal);background:var(--signal);border-color:transparent}
 .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .case{padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:transform .25s,box-shadow .25s,border-color .25s}
 .case:hover{transform:translateY(-3px);box-shadow:var(--glow);border-color:var(--line-strong)}
@@ -162,6 +163,7 @@ section{display:flex;flex-direction:column;gap:24px}
 .demo-strip{padding:20px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:center}
 .demo-video{padding:18px;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:18px;align-items:center}
 .demo-video p{color:var(--muted)}
+.video-text{grid-column:1/-1;font-size:.9rem}.video-text summary{cursor:pointer;color:var(--signal);font-family:var(--mono)}.video-text p{margin-top:8px}
 .demo-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
 .demo-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0;padding:0;list-style:none}
 .demo-steps li{border:1px solid var(--line);border-radius:8px;padding:10px;font:.76rem/1.5 var(--mono);color:var(--muted)}
@@ -309,7 +311,7 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
         </svg><p class="arch-note">The page demonstrates seven connected stages; the wider suite also includes independent review, triage, conformance and release agents.</p>
       </div>
     </div>
-    <div class="panel demo-video rv"><div><span class="label">Screen recording · public demo</span><h3 style="font-size:1.25rem;margin:8px 0">See the pipeline run</h3><p>A 24-second capture of the interactive agent stages using the illustrative shift-swap scenario.</p><p style="font-size:.78rem;margin-top:8px">This is a recorded walkthrough of the portfolio demo, not a production client run.</p></div><video controls preload="metadata" poster="social-preview.png" aria-label="Screen recording of the AI QA agent pipeline"><source src="media/qa-agent-walkthrough.webm" type="video/webm">Your browser does not support WebM video. Use the interactive pipeline above.</video></div>
+    <div class="panel demo-video rv"><div><span class="label">Screen recording · public demo</span><h3 style="font-size:1.25rem;margin:8px 0">See the pipeline run</h3><p>A 24-second capture of the interactive agent stages using the illustrative shift-swap scenario.</p><p style="font-size:.78rem;margin-top:8px">This is a recorded walkthrough of the portfolio demo, not a production client run.</p></div><video controls preload="metadata" poster="social-preview.png" aria-label="Screen recording of the AI QA agent pipeline"><source src="media/qa-agent-walkthrough.webm" type="video/webm">Your browser does not support WebM video. Use the interactive pipeline above, or <a href="media/qa-agent-walkthrough.webm">download the recording</a>.</video><details class="video-text"><summary>What the recording shows (text version)</summary><p>The interactive pipeline above, played from start to finish on the illustrative shift-swap scenario. It steps through the seven stages in order: Feature Explorer, Test Planner, Test Investigator, Test Generator, Test Executor, Test Analyzer and Test Maintenance, showing each stage's example output.</p></details></div>
   </section>
 
   <section id="impact">
