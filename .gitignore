@@ -3,4 +3,7 @@ test-results/
 playwright-report/
 .env
 ai-test-agent/generated/last-run.json
+ai-test-agent/generated/*.run.json
 blob-report/
+.lighthouseci/
+lighthouse-report/

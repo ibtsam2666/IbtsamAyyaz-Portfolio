@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/sitemap.xml

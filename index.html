@@ -4,9 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ibtsam Ayyaz · QA Automation</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="description" content="Ibtsam Ayyaz, QA Automation Engineer / SDET. AI QA agents, Playwright and Cypress automation, parallel CI, mutation testing.">
 <meta property="og:title" content="Ibtsam Ayyaz · QA Automation Engineer / SDET">
-<meta property="og:description" content="AI QA agents, Playwright and Cypress in TypeScript, CI runtime cut from 3–4 hours to 30 minutes.">
+<meta property="og:description" content="Reliable test automation, CI and AI-assisted QA. Playwright · TypeScript · QA agents.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/">
+<meta property="og:image" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ibtsam Ayyaz, QA Automation Engineer and SDET">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ibtsam Ayyaz · QA Automation Engineer / SDET">
+<meta name="twitter:description" content="Reliable test automation, CI and AI-assisted QA.">
+<meta name="twitter:image" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/social-preview.png">
 <meta name="theme-color" content="#05090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +27,8 @@
    each section is a console panel. Accent = signal cyan (runs), pass = lime, flake = amber. */
 :root{
   --bg:#05090b; --bg2:#0a1215; --panel:rgba(14,24,28,.72); --panel-solid:#0e181c; --line:rgba(120,200,210,.16); --line-strong:rgba(120,220,230,.38);
-  --fg:#e7f2f1; --muted:#8fa7a8; --dim:#5d7476;
-  --signal:#3ee6ff; --pass:#9cff57; --flake:#ffb547; --fail:#ff5f6d;
+  --fg:#e7f2f1; --muted:#8fa7a8; --dim:#809597;
+  --signal:#3ee6ff; --on-signal:#021014; --pass:#9cff57; --flake:#ffb547; --fail:#ff5f6d;
   --glow:0 0 0 1px var(--line-strong), 0 10px 40px -12px rgba(62,230,255,.35);
   --display:"Chakra Petch", "Segoe UI", system-ui, sans-serif;
   --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
@@ -26,8 +37,8 @@
 }
 :root[data-theme="light"]{
   --bg:#eef4f4; --bg2:#e2ecec; --panel:rgba(255,255,255,.8); --panel-solid:#ffffff; --line:rgba(20,70,80,.16); --line-strong:rgba(10,110,130,.4);
-  --fg:#0b1a1d; --muted:#466064; --dim:#6f8a8d;
-  --signal:#007f99; --pass:#2f8a12; --flake:#a8650a; --fail:#c22a3a;
+  --fg:#0b1a1d; --muted:#466064; --dim:#567176;
+  --signal:#00677c; --on-signal:#ffffff; --pass:#1d5f08; --flake:#8b5100; --fail:#c22a3a;
   --glow:0 0 0 1px var(--line-strong), 0 10px 30px -14px rgba(0,127,153,.35);
   color-scheme:light;
 }
@@ -40,6 +51,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);ov
 :root[data-theme="light"] .scan{display:none}
 a{color:var(--signal);text-underline-offset:3px}
 :focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:6px}
+.skip-link{position:fixed;z-index:100;left:12px;top:-60px;padding:9px 12px;background:var(--signal);color:var(--bg);border-radius:8px;font:600 .85rem var(--mono)}.skip-link:focus{top:12px}
 h1,h2,h3{font-family:var(--display);margin:0;line-height:1.05;text-wrap:balance;letter-spacing:.01em}
 p{margin:0}
 .mono{font-family:var(--mono)}
@@ -52,11 +64,24 @@ p{margin:0}
 .nav{display:flex;gap:18px;margin-left:auto;font:500 .85rem var(--mono)}
 .nav a{color:var(--muted);text-decoration:none}
 .nav a:hover,.nav a.on{color:var(--fg)}
+.route-rail{display:none;position:fixed;right:max(12px,calc((100vw - 1280px)/2));top:50%;transform:translateY(-50%);z-index:18;padding:12px 5px;background:var(--panel);border:1px solid var(--line-strong);border-radius:999px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.route-mark{display:block;text-align:center;font:500 .5rem var(--mono);letter-spacing:.08em;color:var(--dim);margin-bottom:8px}
+.route-links{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px}
+.route-progress{position:absolute;z-index:0;left:50%;top:15px;bottom:15px;width:2px;transform:translateX(-50%);background:var(--line);overflow:hidden;border-radius:9px}
+.route-progress i{display:block;width:100%;height:0;background:linear-gradient(var(--signal),var(--pass));transform-origin:top;transition:height .15s linear}
+.route-link{position:relative;z-index:1;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--panel-solid);color:var(--muted);text-decoration:none;font:500 .58rem var(--mono);transition:transform .2s,border-color .2s,background .2s,color .2s}
+.route-link:hover,.route-link:focus-visible{transform:scale(1.12);border-color:var(--signal);color:var(--fg)}
+.route-link[aria-current="location"]{background:var(--signal);border-color:var(--signal);color:var(--on-signal);box-shadow:0 0 16px color-mix(in srgb,var(--signal) 55%,transparent);transform:scale(1.14)}
+.route-link:after{content:attr(data-label);position:absolute;right:36px;top:50%;transform:translateY(-50%) translateX(5px);white-space:nowrap;pointer-events:none;opacity:0;background:var(--panel-solid);border:1px solid var(--line-strong);border-radius:7px;padding:5px 9px;color:var(--fg);font:500 .72rem var(--mono);transition:opacity .15s,transform .15s}
+.route-link:hover:after,.route-link:focus-visible:after{opacity:1;transform:translateY(-50%) translateX(0)}
+.route-mobile{display:none}
 .btn{font:600 .82rem var(--mono);border:1px solid var(--line-strong);background:var(--panel);color:var(--fg);border-radius:8px;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .btn:hover{box-shadow:var(--glow)}
-.btn.primary{background:var(--signal);color:#021014;border-color:transparent}
+.btn.primary{background:var(--signal);color:var(--on-signal);border-color:transparent}
 kbd{font:500 .7rem var(--mono);border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--muted)}
-@media (max-width:760px){.nav{display:none}.bar .btn kbd{display:none}}
+@media (max-width:1179px){.nav{display:none}}
+@media (max-width:760px){.bar .btn kbd{display:none}}
+@media (min-width:1180px){.route-rail{display:block}}
 main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding-block:48px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:96px}
 section{display:flex;flex-direction:column;gap:24px}
 .head{display:flex;flex-direction:column;gap:10px;max-width:70ch}
@@ -71,6 +96,8 @@ section{display:flex;flex-direction:column;gap:24px}
 .caret{display:inline-block;width:.6ch;background:var(--signal);animation:blink 1s steps(1) infinite;margin-left:2px}
 @keyframes blink{50%{opacity:0}}
 .pitch{color:var(--muted);max-width:52ch;font-size:1.05rem}
+.recruiter-snapshot{font: .78rem/1.6 var(--mono);color:var(--muted);border-left:2px solid var(--signal);padding:7px 0 7px 12px;max-width:64ch}
+.recruiter-snapshot b{color:var(--fg)}
 .cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .hero-l{display:flex;flex-direction:column;gap:22px;min-width:0}
 .status{display:flex;flex-wrap:wrap;gap:8px}
@@ -118,7 +145,7 @@ section{display:flex;flex-direction:column;gap:24px}
 @media (max-width:860px){.stages{grid-template-columns:repeat(4,minmax(0,1fr))}.stage-out{grid-template-columns:minmax(0,1fr)}}
 .filters{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font:500 .78rem var(--mono);border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 12px;cursor:pointer}
-.chip[aria-pressed="true"]{color:#021014;background:var(--signal);border-color:transparent}
+.chip[aria-pressed="true"]{color:var(--on-signal);background:var(--signal);border-color:transparent}
 .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .case{padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:transform .25s,box-shadow .25s,border-color .25s}
 .case:hover{transform:translateY(-3px);box-shadow:var(--glow);border-color:var(--line-strong)}
@@ -132,6 +159,22 @@ section{display:flex;flex-direction:column;gap:24px}
 .gdr dd.r{color:var(--fg);font-weight:500}
 .stack{display:flex;flex-wrap:wrap;gap:6px}
 .stack span{font:.72rem var(--mono);border:1px solid var(--line);border-radius:5px;padding:2px 7px;color:var(--muted)}
+.case-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
+.demo-strip{padding:20px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:center}
+.demo-video{padding:18px;display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:18px;align-items:center}
+.demo-video p{color:var(--muted)}
+.video-text{grid-column:1/-1;font-size:.9rem}.video-text summary{cursor:pointer;color:var(--signal);font-family:var(--mono)}.video-text p{margin-top:8px}
+.demo-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
+.demo-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.demo-steps li{border:1px solid var(--line);border-radius:8px;padding:10px;font:.76rem/1.5 var(--mono);color:var(--muted)}
+.demo-steps b{display:block;color:var(--signal);margin-bottom:4px}
+.arch{padding:18px;display:flex;flex-direction:column;gap:10px}
+.arch svg{width:100%;height:auto;display:block}
+.arch-note{color:var(--muted);font-size:.88rem}
+.reliability{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.reliability article{padding:18px;display:flex;flex-direction:column;gap:8px}
+.reliability p{color:var(--muted);font-size:.9rem}
+@media (max-width:760px){.demo-strip,.demo-video{grid-template-columns:1fr}.demo-steps,.reliability{grid-template-columns:1fr}}
 @media (max-width:760px){.cases{grid-template-columns:minmax(0,1fr)}}
 .lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
 .lab .panel{padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -159,6 +202,21 @@ section{display:flex;flex-direction:column;gap:24px}
 .copyrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .addr{font:.92rem var(--mono);user-select:all;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;word-break:break-all}
 @media (max-width:760px){.contact{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:1179px){
+  main{padding-bottom:132px}
+  footer{padding-bottom:110px}
+  .route-mobile{position:fixed;z-index:30;left:50%;right:auto;bottom:max(10px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(460px,calc(100vw - 24px));display:flex;align-items:center;gap:9px;padding:8px;border:1px solid var(--line-strong);border-radius:14px;background:color-mix(in srgb,var(--panel-solid) 92%,transparent);box-shadow:var(--glow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .route-arrow{width:38px;height:38px;flex:0 0 38px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);color:var(--signal);font:700 1rem var(--mono);cursor:pointer}
+  .route-arrow:disabled{opacity:.38;cursor:default}
+  .route-mobile-center{position:relative;flex:1;min-width:0}
+  .route-current{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:4px 7px 8px;border:0;background:transparent;color:var(--fg);text-align:left;font:500 .78rem var(--mono);cursor:pointer}
+  .route-current small{color:var(--signal);white-space:nowrap}
+  .route-mobile .route-progress{position:relative;left:auto;top:auto;bottom:auto;transform:none;width:100%;height:2px}
+  .route-mobile .route-progress i{width:0;height:100%;transition:width .15s linear}
+  .route-menu{position:absolute;left:0;right:0;bottom:calc(100% + 12px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:9px;background:var(--panel-solid);border:1px solid var(--line-strong);border-radius:12px;box-shadow:var(--glow);max-height:55vh;overflow-y:auto}
+  .route-menu a{padding:9px 10px;border-radius:7px;color:var(--muted);font:.72rem var(--mono);text-decoration:none}
+  .route-menu a[aria-current="location"]{background:color-mix(in srgb,var(--signal) 16%,transparent);color:var(--signal)}
+}
 footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);color:var(--dim);padding-block:24px 40px;padding-left:16px;padding-right:16px}
 .cmdk{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-start;justify-content:center;padding-top:12vh;padding-left:16px;padding-right:16px;background:color-mix(in srgb,var(--bg) 60%,transparent);backdrop-filter:blur(6px)}
 .cmdk-box{width:min(560px,100%);background:var(--panel-solid);border:1px solid var(--line-strong);border-radius:14px;box-shadow:var(--glow);overflow:hidden}
@@ -173,6 +231,7 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
 </style>
 </head>
 <body>
+<a class="skip-link" href="#top">Skip to main content</a>
 <canvas id="net" aria-hidden="true"></canvas>
 <div class="scan" aria-hidden="true"></div>
 
@@ -180,12 +239,18 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
   <div class="bar-in">
     <a class="logo" href="#top"><span class="dot" aria-hidden="true"></span>IBTSAM.AYYAZ</a>
     <nav class="nav" aria-label="Sections">
-      <a href="#impact">impact</a><a href="#agents">agents</a><a href="#work">work</a><a href="#lab">lab</a><a href="#stack">stack</a><a href="#contact">contact</a>
+      <a href="#demo">demo</a><a href="#impact">impact</a><a href="#agents">agents</a><a href="#work">work</a><a href="#lab">lab</a><a href="#reliability">reliability</a><a href="#stack">stack</a><a href="#contact">contact</a>
     </nav>
     <button class="btn" id="openCmd" type="button" aria-label="Open command palette" style="margin-left:auto">Search <kbd>Ctrl K</kbd></button>
     <button class="btn" id="theme" type="button" aria-label="Switch light or dark theme">◐</button>
   </div>
 </header>
+
+<nav class="route-rail" aria-label="Portfolio route">
+  <span class="route-mark" aria-hidden="true">PATH</span>
+  <div class="route-progress" aria-hidden="true"><i id="routeProgress"></i></div>
+  <div class="route-links" id="routeLinks"></div>
+</nav>
 
 <main id="top">
   <section class="hero">
@@ -194,8 +259,11 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
       <h1>Ibtsam <span class="grad">Ayyaz</span></h1>
       <div class="rot" aria-live="polite"><span id="rot">I build <b>AI agents that write and fix tests.</b></span><span class="caret" aria-hidden="true">&nbsp;</span></div>
       <p class="pitch">Four-plus years making test suites that engineers trust: Playwright and Cypress in TypeScript, CI that finishes in minutes instead of hours, and AI-driven QA agents that plan, generate, triage and migrate tests.</p>
+      <p class="recruiter-snapshot"><b>Recruiter snapshot:</b> 4+ years · UI/API automation · Playwright &amp; TypeScript · Lahore · remote or relocation · 1-month notice</p>
       <div class="cta">
-        <a class="btn primary" href="#work">See the work</a>
+        <a class="btn primary" href="#demo">Watch the walkthrough</a>
+        <a class="btn" href="resume.pdf" download>Download résumé</a>
+        <a class="btn" href="#work">Case studies</a>
         <a class="btn" href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio">GitHub repo</a>
         <a class="btn" href="report/">Live test report</a>
         <a class="btn" href="https://www.linkedin.com/in/ibtsamayyaz/">LinkedIn</a>
@@ -218,17 +286,49 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
     </div>
   </section>
 
+  <section id="demo">
+    <div class="head rv"><span class="label">Interactive walkthrough · about 18 seconds</span><h2>From a story to a verified test</h2><p>Watch the illustrative shift-swap scenario move through all seven stages, or use the stage controls below to inspect the plan, generated spec, execution result and diagnosis.</p></div>
+    <div class="panel demo-strip rv">
+      <div><div class="label">Illustrative scenario</div><h3 style="font-size:1.35rem;margin-top:8px">Shift swap approval</h3><p style="color:var(--muted);margin-top:8px">Start from a feature story, inspect how agents map risks and reuse fixtures, then follow a failing edge case through execution and diagnosis.</p>
+        <ol class="demo-steps"><li><b>Explore</b>Map the screens, API, data and risks.</li><li><b>Generate</b>Reuse fixtures and tie tests to criteria.</li><li><b>Diagnose</b>Read the result and explain the product bug.</li></ol>
+        <div class="cta" style="margin-top:16px"><a class="btn primary" href="#agents" onclick="document.getElementById('play').click()">Play interactive pipeline</a><a class="btn" href="agent-lab.html">Explore the AI agent lab</a><a class="btn" href="how-to-run.html">How to run locally</a><a class="btn" href="ai-test-agent/sample-run.txt">View recorded agent run</a><a class="btn" href="sample-failure-report.md">Sample failure report</a><a class="btn" href="report/">CI report and failure traces</a></div>
+      </div>
+      <div class="panel arch"><span class="label">14-agent suite · simplified architecture</span>
+        <svg viewBox="0 0 680 260" role="img" aria-labelledby="archTitle archDesc" xmlns="http://www.w3.org/2000/svg"><title id="archTitle">QA agent suite architecture</title><desc id="archDesc">Story, acceptance criteria and changed code feed a pipeline from exploration and planning through test maintenance. Verified tests and traces feed independent review and triage agents, which produce reports and follow-up work.</desc>
+          <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6" fill="none" stroke="currentColor" stroke-width="1.2"/></marker></defs>
+          <g fill="var(--bg2)" stroke="var(--line-strong)" stroke-width="1.5" font-family="monospace" font-size="12" text-anchor="middle">
+            <rect x="8" y="93" width="110" height="54" rx="8"/><text x="63" y="115" fill="var(--fg)" stroke="none">Story + AC</text><text x="63" y="132" fill="var(--muted)" stroke="none">code + JIRA</text>
+            <rect x="148" y="20" width="130" height="48" rx="8"/><text x="213" y="40" fill="var(--fg)" stroke="none">Explore</text><text x="213" y="56" fill="var(--muted)" stroke="none">Plan</text>
+            <rect x="148" y="88" width="130" height="48" rx="8"/><text x="213" y="108" fill="var(--fg)" stroke="none">Investigate</text><text x="213" y="124" fill="var(--muted)" stroke="none">Generate</text>
+            <rect x="148" y="156" width="130" height="48" rx="8"/><text x="213" y="176" fill="var(--fg)" stroke="none">Execute</text><text x="213" y="192" fill="var(--muted)" stroke="none">Analyze</text>
+            <rect x="148" y="212" width="130" height="40" rx="8"/><text x="213" y="237" fill="var(--fg)" stroke="none">Maintain</text>
+            <rect x="318" y="82" width="130" height="64" rx="8"/><text x="383" y="108" fill="var(--pass)" stroke="none">Verified tests</text><text x="383" y="127" fill="var(--muted)" stroke="none">traces · gap report</text>
+            <rect x="488" y="20" width="174" height="52" rx="8"/><text x="575" y="43" fill="var(--fg)" stroke="none">PR Reviewer · Triage</text><text x="575" y="60" fill="var(--muted)" stroke="none">AC · Release Impact</text>
+            <rect x="488" y="101" width="174" height="52" rx="8"/><text x="575" y="124" fill="var(--fg)" stroke="none">Team feedback</text><text x="575" y="141" fill="var(--muted)" stroke="none">JIRA · CI · test repo</text>
+            <rect x="488" y="182" width="174" height="52" rx="8"/><text x="575" y="205" fill="var(--fg)" stroke="none">Report + follow-up</text><text x="575" y="222" fill="var(--muted)" stroke="none">defect or maintenance</text>
+          </g>
+          <g fill="none" stroke="var(--signal)" stroke-width="1.5" marker-end="url(#arrow)"><path d="M118 120H140"/><path d="M213 68V88"/><path d="M213 136V156"/><path d="M213 204V212"/><path d="M278 232H300V144H310"/><path d="M448 112H466V46H480"/><path d="M575 72V93"/><path d="M575 153V174"/><path d="M488 208H460V240H300V232H278"/></g>
+        </svg><p class="arch-note">The page demonstrates seven connected stages; the wider suite also includes independent review, triage, conformance and release agents.</p>
+      </div>
+    </div>
+    <div class="panel demo-video rv"><div><span class="label">Screen recording · public demo</span><h3 style="font-size:1.25rem;margin:8px 0">See the pipeline run</h3><p>A 24-second capture of the interactive agent stages using the illustrative shift-swap scenario.</p><p style="font-size:.78rem;margin-top:8px">This is a recorded walkthrough of the portfolio demo, not a production client run.</p></div><video controls preload="metadata" poster="social-preview.png" aria-label="Screen recording of the AI QA agent pipeline"><source src="media/qa-agent-walkthrough.webm" type="video/webm">Your browser does not support WebM video. Use the interactive pipeline above, or <a href="media/qa-agent-walkthrough.webm">download the recording</a>.</video><details class="video-text"><summary>What the recording shows (text version)</summary><p>The interactive pipeline above, played from start to finish on the illustrative shift-swap scenario. It steps through the seven stages in order: Feature Explorer, Test Planner, Test Investigator, Test Generator, Test Executor, Test Analyzer and Test Maintenance, showing each stage's example output.</p></details></div>
+  </section>
+
   <section id="impact">
-    <div class="head rv"><span class="label">Impact</span><h2>Before and after</h2><p>Measured results from my work on a U.S. workforce and payroll platform.</p></div>
+    <div class="head rv"><span class="label">Impact</span><h2>Before and after</h2><p>Reported outcomes across several projects; client details are withheld under NDA. Bars compare before and after within each measure.</p></div>
     <div class="metrics">
-      <article class="panel metric pre rv"><h3>Full regression runtime</h3><span class="big" data-count="30" data-suffix=" min">30 min</span>
+      <article class="panel metric pre rv"><h3>Full regression runtime</h3><span class="big" data-count="30" data-suffix=" min">30 min</span><p style="color:var(--muted);font-size:.84rem">Jenkins suite, split into independent parallel groups.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>3–4 h</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:14%"></div></div><span>~30 min</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Automated test coverage</h3><span class="big" data-count="7000" data-prefix="~">~7,000</span>
+      <article class="panel metric pre rv"><h3>Automated test coverage</h3><span class="big" data-count="7000" data-prefix="~">~7,000</span><p style="color:var(--muted);font-size:.84rem">Suite grew from 3,000 as product coverage expanded.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:43%"></div></div><span>3,000</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:100%"></div></div><span>~7,000</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Failing automated tests</h3><span class="big" data-count="80" data-prefix="~">~80</span>
+      <article class="panel metric pre rv"><h3>Failing automated tests</h3><span class="big" data-count="80" data-prefix="~">~80</span><p style="color:var(--muted);font-size:.84rem">Reduced through failure-by-failure test and data investigation.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>400+</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:20%"></div></div><span>~80</span></div></div></article>
-      <article class="panel metric pre rv"><h3>Tickets per QA engineer per sprint</h3><span class="big" data-count="6" data-prefix="3–">3–6</span>
+      <article class="panel metric pre rv"><h3>Tickets per QA engineer per sprint</h3><span class="big" data-count="6" data-prefix="3–">3–6</span><p style="color:var(--muted);font-size:.84rem">Reported after the 14-agent QA workflow was introduced.</p>
         <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:33%"></div></div><span>1–2</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:100%"></div></div><span>3–6</span></div></div></article>
+      <article class="panel metric pre rv"><h3>Regression recovery</h3><span class="big">4–5 h</span><p style="color:var(--muted);font-size:.84rem">Xray failure list, database restore, then targeted reruns.</p>
+        <div class="bars"><div class="br"><span>before</span><div class="track"><div class="fill before" style="--w:100%"></div></div><span>1–1.5 d</span></div><div class="br"><span>after</span><div class="track"><div class="fill after" style="--w:25%"></div></div><span>4–5 h</span></div></div></article>
+      <article class="panel metric pre rv"><h3>Cypress → Playwright migration</h3><span class="big" data-count="6" data-suffix=" days">6 days</span>
+        <p style="color:var(--muted)">About 500 tests converted per day. Assertion-level mutation checks guarded the migration quality.</p></article>
     </div>
   </section>
 
@@ -258,22 +358,22 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
     <div class="cases" id="cases">
       <article class="panel case rv" data-k="ai"><div class="case-top"><h3>14-agent AI QA suite</h3><span class="tagx">1–2 → 3–6 tickets</span></div>
         <dl class="gdr"><dt>Given</dt><dd>QA capacity was the bottleneck at 1–2 tickets per person per sprint.</dd><dt>Built</dt><dd>A pipeline from feature exploration to test maintenance, plus PR review, triage, AC conformance, release impact and exploratory agents that read code and JIRA context.</dd><dt>Result</dt><dd class="r">Capacity rose to 3–6 tickets per person.</dd></dl>
-        <div class="stack"><span>Claude Code</span><span>Copilot</span><span>JIRA</span><span>Playwright</span></div></article>
+        <div class="stack"><span>Claude Code</span><span>Copilot</span><span>JIRA</span><span>Playwright</span></div><div class="case-links"><a href="#agents">Explore pipeline →</a><a href="case-studies/cart-badge-agent.html">Read public case study →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio#ai-test-agent">Agent details →</a><a href="ai-test-agent/sample-run.txt">Sample run →</a></div></article>
       <article class="panel case rv" data-k="ai"><div class="case-top"><h3>Cypress → Playwright in six days</h3><span class="tagx">~500 tests/day</span></div>
         <dl class="gdr"><dt>Given</dt><dd>A large Cypress suite had to move to Playwright without losing what each test checked.</dd><dt>Built</dt><dd>A guarded migration agent that converted specs in batches and verified them with quality checks, including assertion-level mutation testing.</dd><dt>Result</dt><dd class="r">Whole suite migrated in six days.</dd></dl>
-        <div class="stack"><span>Playwright</span><span>Cypress</span><span>TypeScript</span></div></article>
+        <div class="stack"><span>Playwright</span><span>Cypress</span><span>TypeScript</span></div><div class="case-links"><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio#highlights-from-my-work">Migration and agent highlights →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/tree/main/mutation-testing">Mutation testing code →</a></div></article>
       <article class="panel case rv" data-k="ci"><div class="case-top"><h3>Parallel CI</h3><span class="tagx">3–4 h → 30 min</span></div>
         <dl class="gdr"><dt>Given</dt><dd>A full Jenkins regression run took 3–4 hours.</dd><dt>Built</dt><dd>Split execution into independent groups after validating data, login and test dependencies.</dd><dt>Result</dt><dd class="r">Runtime cut to about 30 minutes; about 20 hours of manual testing saved per sprint.</dd></dl>
-        <div class="stack"><span>Jenkins</span><span>Node.js</span><span>Cypress</span></div></article>
+        <div class="stack"><span>Jenkins</span><span>Node.js</span><span>Cypress</span></div><div class="case-links"><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/.github/workflows/ci.yml">CI workflow →</a><a href="report/">Latest test report →</a></div></article>
       <article class="panel case rv" data-k="ci ai"><div class="case-top"><h3>MCP server for failed-test reruns</h3><span class="tagx">1.5 days → 4–5 h</span></div>
         <dl class="gdr"><dt>Given</dt><dd>Recovering a failed regression took two people 1–1.5 days of one-by-one reruns.</dd><dt>Built</dt><dd>Retry workflows that read Xray failures and restore test databases, plus an MCP server that reruns specs by Xray ID in parallel and posts live status to JIRA.</dd><dt>Result</dt><dd class="r">Recovery cut to about 4–5 hours.</dd></dl>
-        <div class="stack"><span>MCP</span><span>Xray</span><span>Jenkins</span><span>SQL Server</span></div></article>
+        <div class="stack"><span>MCP</span><span>Xray</span><span>Jenkins</span><span>SQL Server</span></div><div class="case-links"><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/mcp-rerun-server/server.ts">MCP server source →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/mcp-rerun-server/smoke-client.ts">Try the smoke client →</a></div></article>
       <article class="panel case rv" data-k="rel"><div class="case-top"><h3>Flaky-test reduction</h3><span class="tagx amb">400+ → ~80 failing</span></div>
         <dl class="gdr"><dt>Given</dt><dd>A 3,000-test suite with more than 400 failing tests.</dd><dt>Built</dt><dd>Investigated failures one by one, fixed unstable tests and test data, and kept adding coverage with Page Object Model and data-driven tests.</dd><dt>Result</dt><dd class="r">Suite grew to ~7,000 tests while failures fell to ~80 in a year.</dd></dl>
-        <div class="stack"><span>Cypress</span><span>Playwright</span><span>POM</span></div></article>
+        <div class="stack"><span>Cypress</span><span>Playwright</span><span>POM</span></div><div class="case-links"><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/tree/main/ui-tests">UI test framework →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/tree/main/api-tests">API test framework →</a></div></article>
       <article class="panel case rv" data-k="rel"><div class="case-top"><h3>Data checks behind the UI</h3><span class="tagx amb">caught pre-release</span></div>
         <dl class="gdr"><dt>Given</dt><dd>A shift crossing midnight showed correct hours in the app.</dd><dt>Found</dt><dd>Comparing the UI with payroll data in SQL showed the shift split across two days, breaking overtime.</dd><dt>Result</dt><dd class="r">Fixed before release; overnight-shift regression tests added.</dd></dl>
-        <div class="stack"><span>SQL</span><span>Mobile</span><span>Payroll</span></div></article>
+        <div class="stack"><span>SQL</span><span>Mobile</span><span>Payroll</span></div><div class="case-links"><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/ui-tests/tests/checkout.spec.ts">Example assertion-driven spec →</a><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio#design-choices">Testing approach →</a></div></article>
     </div>
   </section>
 
@@ -289,6 +389,15 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
         <pre class="code" id="code"></pre>
       </div>
       <div class="panel rv"><span class="label">Result</span><pre class="code" id="labOut" style="white-space:pre-wrap"></pre><div class="verdict" id="verdict"></div></div>
+    </div>
+  </section>
+
+  <section id="reliability">
+    <div class="head rv"><span class="label">AI reliability</span><h2>Make generated tests fit the team</h2><p>Generation is only useful when tests follow the project’s conventions and prove the behavior they claim to cover.</p></div>
+    <div class="reliability">
+      <article class="panel rv"><span class="label">1 · Ground</span><h3>Use the real project context</h3><p>Give the agent existing page objects, fixtures and acceptance criteria. Keep generated tests aligned to the codebase instead of inventing selectors and setup.</p></article>
+      <article class="panel rv"><span class="label">2 · Trace</span><h3>Connect criteria to results</h3><p>Label each test with its acceptance criterion, run it, and report uncovered criteria explicitly. A green run alone does not prove complete coverage.</p></article>
+      <article class="panel rv"><span class="label">3 · Challenge</span><h3>Check assertion strength</h3><p>Mutate expected values and verify tests fail. A surviving mutation points to an assertion that needs stronger evidence.</p><a href="mutation-testing/sample-output.txt">See a real mutation report →</a></article>
     </div>
   </section>
 
@@ -319,6 +428,15 @@ footer{position:relative;z-index:1;text-align:center;font:.78rem var(--mono);col
     </div>
   </section>
 </main>
+<nav class="route-mobile" aria-label="Portfolio chapter navigation">
+  <button class="route-arrow" id="routePrev" type="button" aria-label="Previous section">↑</button>
+  <div class="route-mobile-center">
+    <button class="route-current" id="routeToggle" type="button" aria-controls="routeMenu" aria-expanded="false"><span id="routeCurrent" aria-live="polite">01 / 09 · Overview</span><small>SECTIONS⌄</small></button>
+    <div class="route-progress" aria-hidden="true"><i id="mobileRouteProgress"></i></div>
+    <div class="route-menu" id="routeMenu" hidden></div>
+  </div>
+  <button class="route-arrow" id="routeNext" type="button" aria-label="Next section">↓</button>
+</nav>
 <footer>© Ibtsam Ayyaz · plain HTML, CSS and canvas · press <kbd>Ctrl K</kbd></footer>
 
 <div class="cmdk" id="cmdk" hidden role="dialog" aria-modal="true" aria-label="Command palette">
@@ -381,7 +499,7 @@ function run(){
 run();
 
 const io=new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target; io.unobserve(el); el.classList.remove('lift');
-  if(el.classList.contains('pre')){ el.classList.remove('pre'); const big=el.querySelector('[data-count]');
+  if(el.classList.contains('pre')){ el.classList.remove('pre'); const big=el.querySelector('.big[data-count]');
     if(big && !reduce){ const to=+big.dataset.count, pre=big.dataset.prefix||'', suf=big.dataset.suffix||''; let st=null;
       const step=ts=>{ st=st||ts; const p=Math.min(1,(ts-st)/1200), v=Math.round(to*(1-Math.pow(1-p,3))); big.textContent=pre+v.toLocaleString()+suf; if(p<1) requestAnimationFrame(step); };
       requestAnimationFrame(step); } }
@@ -425,10 +543,47 @@ function selectEmail(){ const r=document.createRange(); r.selectNodeContents($('
 function copyEmail(){ const t=$('#email').textContent; try{ navigator.clipboard.writeText(t).then(()=>toast('Email copied'),selectEmail); }catch(e){ selectEmail(); } }
 $('#copy').onclick=copyEmail;
 
-const navIo=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) $$('.nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)); }),{rootMargin:'-45% 0px -50% 0px'});
-$$('main section[id]').forEach(s=>navIo.observe(s));
+const routeItems=[
+  {id:'top',label:'Overview',target:'.hero'},
+  {id:'demo',label:'Walkthrough',target:'#demo'},
+  {id:'impact',label:'Impact',target:'#impact'},
+  {id:'agents',label:'AI agents',target:'#agents'},
+  {id:'work',label:'Case studies',target:'#work'},
+  {id:'lab',label:'Mutation lab',target:'#lab'},
+  {id:'reliability',label:'AI reliability',target:'#reliability'},
+  {id:'stack',label:'Stack & experience',target:'#stack'},
+  {id:'contact',label:'Contact',target:'#contact'}
+];
+const routeLinks=$('#routeLinks'),routeMenu=$('#routeMenu'),routeCurrent=$('#routeCurrent');
+const routeTargets=routeItems.map(x=>$(x.target)); let activeRoute=0,routeFrame=0;
+routeItems.forEach((item,i)=>{
+  const n=String(i+1).padStart(2,'0');
+  const a=document.createElement('a'); a.className='route-link'; a.href='#'+item.id; a.textContent=n; a.dataset.label=item.label; a.setAttribute('aria-label',`Go to ${item.label}`); routeLinks.appendChild(a);
+  const m=document.createElement('a'); m.href='#'+item.id; m.textContent=`${n} · ${item.label}`; m.setAttribute('aria-label',`Go to ${item.label}`); routeMenu.appendChild(m);
+});
+function setRoute(i){
+  activeRoute=Math.max(0,Math.min(routeItems.length-1,i)); const item=routeItems[activeRoute],n=String(activeRoute+1).padStart(2,'0');
+  $$('.route-link,#routeMenu a').forEach(a=>{const on=a.getAttribute('href')==='#'+item.id;if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});
+  routeCurrent.textContent=`${n} / ${String(routeItems.length).padStart(2,'0')} · ${item.label}`;
+  $('#routePrev').disabled=activeRoute===0; $('#routeNext').disabled=activeRoute===routeItems.length-1;
+  $$('.nav a').forEach(a=>{const on=a.getAttribute('href')==='#'+item.id;a.classList.toggle('on',on);if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});
+}
+function updateRoute(){
+  routeFrame=0; const marker=innerHeight*.38; let i=0;
+  for(let j=1;j<routeTargets.length;j++) if(routeTargets[j].getBoundingClientRect().top<=marker)i=j;
+  setRoute(i);
+  const max=document.documentElement.scrollHeight-innerHeight,p=max>0?Math.max(0,Math.min(1,scrollY/max)):0;
+  $('#routeProgress').style.height=(p*100)+'%'; $('#mobileRouteProgress').style.width=(p*100)+'%';
+}
+function queueRoute(){if(!routeFrame)routeFrame=requestAnimationFrame(updateRoute);}
+addEventListener('scroll',queueRoute,{passive:true}); addEventListener('resize',queueRoute); queueRoute();
+$('#routeToggle').onclick=()=>{routeMenu.hidden=!routeMenu.hidden;$('#routeToggle').setAttribute('aria-expanded',String(!routeMenu.hidden));};
+routeMenu.addEventListener('click',e=>{if(e.target.closest('a')){routeMenu.hidden=true;$('#routeToggle').setAttribute('aria-expanded','false');}});
+$('#routePrev').onclick=()=>{if(activeRoute>0)location.hash=routeItems[activeRoute-1].id;};
+$('#routeNext').onclick=()=>{if(activeRoute<routeItems.length-1)location.hash=routeItems[activeRoute+1].id;};
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!routeMenu.hidden){routeMenu.hidden=true;$('#routeToggle').setAttribute('aria-expanded','false');$('#routeToggle').focus();}});
 
-const CMDS=[['Impact: before and after','#impact'],['AI agent pipeline','#agents'],['Case studies','#work'],['Mutation lab','#lab'],['Stack and experience','#stack'],['Contact','#contact'],['Copy email',copyEmail],['Toggle theme',()=>$('#theme').click()],['Play agent pipeline',()=>{location.hash='agents';$('#play').click();}],['Open GitHub repo','https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio'],['Open LinkedIn','https://www.linkedin.com/in/ibtsamayyaz/']];
+const CMDS=[['Overview','#top'],['Guided walkthrough','#demo'],['Impact: before and after','#impact'],['AI agent pipeline','#agents'],['AI agent evaluation lab','agent-lab.html'],['How the AI demos work','how-ai-agents-work.html'],['Case studies','#work'],['Mutation lab','#lab'],['AI reliability','#reliability'],['Stack and experience','#stack'],['How to run this project','how-to-run.html'],['Download résumé','resume.pdf'],['Contact','#contact'],['Copy email',copyEmail],['Toggle theme',()=>$('#theme').click()],['Play agent pipeline',()=>{location.hash='agents';$('#play').click();}],['Open GitHub repo','https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio'],['Open LinkedIn','https://www.linkedin.com/in/ibtsamayyaz/']];
 const ck=$('#cmdk'), ci=$('#cmdIn'), cl=$('#cmdList'); let sel=0, shown=CMDS;
 function render(){ const q=ci.value.toLowerCase(); shown=CMDS.filter(c=>c[0].toLowerCase().includes(q)); sel=Math.min(sel,Math.max(0,shown.length-1));
   cl.innerHTML=shown.map((c,i)=>`<li role="option" aria-selected="${i===sel}" data-i="${i}">${c[0]}<span>${typeof c[1]==='function'?'run':c[1][0]==='#'?'jump':'open'}</span></li>`).join('') || '<li>No match</li>'; }

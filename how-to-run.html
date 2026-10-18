@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Quick guide to installing and running the Playwright UI/API suites and QA demos in Ibtsam Ayyaz's portfolio repository.">
+<title>How to Run the Portfolio Project · Ibtsam Ayyaz</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How to Run the Portfolio Project · Ibtsam Ayyaz">
+<meta property="og:description" content="Quick guide to installing and running the Playwright UI/API suites and QA demos in Ibtsam Ayyaz's portfolio repository.">
+<meta property="og:url" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/how-to-run.html">
+<meta property="og:image" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/how-to-run.html">
+<style>
+:root{color-scheme:dark;--bg:#05090b;--panel:#101c20;--line:#254047;--fg:#e7f2f1;--muted:#a2b8b9;--cyan:#3ee6ff;--lime:#9cff57;--mono:Consolas,monospace;--sans:Arial,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--sans)}main{width:min(820px,calc(100% - 32px));margin:0 auto;padding:42px 0 72px}a{color:var(--cyan)}h1,h2{line-height:1.2}h1{font-size:clamp(2rem,6vw,3.2rem);margin:8px 0 10px}h2{font-size:1.2rem;margin:0 0 8px}.label{font:12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}.muted{color:var(--muted)}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin:14px 0}.step{display:grid;grid-template-columns:34px 1fr;gap:12px}.num{font:700 1rem var(--mono);color:var(--lime);padding-top:2px}pre{overflow-x:auto;background:#071013;border:1px solid var(--line);border-radius:8px;padding:13px 15px;font:13px/1.65 var(--mono);color:#d9eceb;margin:10px 0 0}p{margin:5px 0}.footer{margin-top:26px;color:var(--muted);font-size:.9rem}@media(max-width:600px){.card{padding:16px}pre{font-size:12px}}
+</style></head><body><main>
+<a href="index.html">← Portfolio</a><p class="label" style="margin-top:24px">Quick start · Node.js 20+</p>
+<h1>How to run this project</h1><p class="muted">Clone the public repository, install the browser once, then run the tests or replay a demo. The AI agent replay works without an API key.</p>
+<section class="card step"><span class="num">01</span><div><h2>Get the code and install dependencies</h2><pre>git clone https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio.git
+cd IbtsamAyyaz-Portfolio
+npm ci
+npx playwright install chromium</pre></div></section>
+<section class="card step"><span class="num">02</span><div><h2>Run the UI and API suites</h2><pre>npm run typecheck
+npm test
+npm run report</pre><p class="muted">The suites exercise the public Sauce Demo and Restful Booker practice apps. The HTML report opens after the run.</p></div></section>
+<section class="card step"><span class="num">03</span><div><h2>Replay the AI test agent</h2><pre>npm run agent -- ai-test-agent/stories/cart-badge.md --replay</pre><p class="muted">Uses a checked-in response to generate and run tests, then maps results to the story’s acceptance criteria. No model API key is needed.</p></div></section>
+<section class="card step"><span class="num">04</span><div><h2>Try mutation testing</h2><pre>npm run mutate -- ui-tests/tests/checkout.spec.ts
+npm run mutate -- mutation-testing/examples/weak-assertions.spec.ts</pre><p class="muted">The second example includes a surviving mutation to show how the report identifies an assertion to strengthen.</p></div></section>
+<section class="card step"><span class="num">05</span><div><h2>Try the MCP rerun demo</h2><pre>npx tsx mcp-rerun-server/smoke-client.ts</pre><p class="muted">Starts the server over stdio and calls its demo tools. To run the live model-backed agent instead of replay mode, configure <code>ANTHROPIC_API_KEY</code>.</p></div></section>
+<section class="card step"><span class="num">06</span><div><h2>Explore and replay the AI agent lab</h2><pre>npm run agent:lab -- --scenario all
+npm run agent:lab -- --scenario review --decision approve
+npm run agent:lab -- --scenario triage
+npm run agent:lab -- --scenario all --format html --out agent-lab-report.html</pre><p class="muted">The browser lab and CLI cover evaluation, four failure categories, a human review gate, tool traces, bounded recovery and cost/speed estimates. These deterministic fixtures need no API key, make no model call and never execute generated code. Figures are illustrative, not live benchmark results.</p><p><a href="agent-lab.html">Launch the agent lab →</a> · <a href="how-ai-agents-work.html">How the demos are built →</a></p></div></section>
+<section class="card step"><span class="num">07</span><div><h2>Run the live model-backed agent (optional)</h2><pre>$env:ANTHROPIC_API_KEY="your-key"
+npm run agent -- ai-test-agent/stories/cart-badge.md</pre><p class="muted">The run writes a local metadata JSON with model, provider token counts, elapsed time and test results. To estimate API cost, set <code>AGENT_INPUT_USD_PER_MILLION</code> and <code>AGENT_OUTPUT_USD_PER_MILLION</code> to rates you choose. Keep API keys out of source control. The recorded replay remains available with no key.</p></div></section>
+<p class="footer">See the <a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio">repository</a> for source and implementation details, or return to the <a href="index.html">portfolio</a>.</p>
+</main></body></html>

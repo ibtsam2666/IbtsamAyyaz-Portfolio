@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="End-to-end public case study: turn a cart badge story into five Playwright tests and an acceptance-criteria coverage report.">
+<title>Cart Badge Agent · Ibtsam Ayyaz</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cart Badge Agent · Ibtsam Ayyaz">
+<meta property="og:description" content="End-to-end public case study: turn a cart badge story into five Playwright tests and an acceptance-criteria coverage report.">
+<meta property="og:url" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/case-studies/cart-badge-agent.html">
+<meta property="og:image" content="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/case-studies/cart-badge-agent.html">
+<style>
+:root{color-scheme:dark;--bg:#071013;--panel:#101c20;--line:#254047;--fg:#e7f2f1;--muted:#a2b8b9;--cyan:#3ee6ff;--lime:#9cff57;--mono:Consolas,monospace;--sans:Arial,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--sans)}main{width:min(900px,calc(100% - 32px));margin:0 auto;padding:50px 0 80px}a{color:var(--cyan)}h1,h2{line-height:1.15}h1{font-size:clamp(2.4rem,7vw,4rem);margin:10px 0}h2{margin:0 0 12px}.eyebrow{font:12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}.lead{font-size:1.15rem;color:var(--muted);max-width:68ch}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin:18px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid .panel{margin:0}ol{padding-left:22px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font:12px var(--mono);color:var(--lime);margin:0 6px 6px 0}pre{white-space:pre-wrap;overflow:auto;background:#071013;border:1px solid var(--line);border-radius:9px;padding:16px;font:13px/1.6 var(--mono);color:#d9eceb}.result{color:var(--lime)}.footer{margin-top:30px;color:var(--muted);font-size:.9rem}@media(max-width:650px){.grid{grid-template-columns:1fr}.panel{padding:17px}}
+</style></head><body><main>
+<a href="../index.html">← Portfolio</a><p class="eyebrow">Public project · AI-assisted test generation</p>
+<h1>From a cart story to tested behavior</h1><p class="lead">A reproducible example of an AI test agent using existing fixtures and page objects, mapping generated tests back to acceptance criteria, and reporting coverage.</p>
+<div><span class="pill">Playwright</span><span class="pill">TypeScript</span><span class="pill">Sauce Demo</span><span class="pill">Recorded replay</span></div>
+<section class="panel"><h2>1. The problem</h2><p>The story asks for a cart badge that stays in sync as a shopper adds or removes products. Five acceptance criteria cover increment, decrement, empty state, cart-page consistency, and persistence after reload.</p><ol><li>Adding a product increases the badge by one.</li><li>Removing a product decreases the badge by one.</li><li>An empty cart has no badge.</li><li>The badge matches the cart contents.</li><li>The count survives a page reload.</li></ol><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/ai-test-agent/stories/cart-badge.md">Read the full story →</a></section>
+<div class="grid">
+<section class="panel"><h2>2. Ground generation in the repo</h2><p>The agent reads the story plus the existing shop fixture and page objects. Its prompt requires use of the signed-in fixture, existing methods and criterion-numbered test titles. This avoids raw login setup and keeps generated tests in the framework's style.</p><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/ai-test-agent/agent.ts">Inspect the agent →</a></section>
+<section class="panel"><h2>3. Generate five tests</h2><p>Replay mode uses a checked-in model response. The generated spec covers each criterion with a concrete count or empty-state assertion.</p><pre>test('[AC1] adding a product increases the badge by one', ...)
+test('[AC2] removing a product decreases the badge by one', ...)
+// AC3, AC4 and AC5 are also mapped to tests.</pre><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/ai-test-agent/generated/cart-badge.spec.ts">Read the generated spec →</a></section></div>
+<section class="panel"><h2>4. Run and map the results</h2><p class="result"><b>5 of 5 acceptance criteria covered · 5 tests passed in the recorded run</b></p><p>The agent parses the JSON test report, associates each test title with its criterion number, and lists criteria with no passing test as gaps. The checked-in replay output makes this flow reviewable without an API key.</p><pre>AC1 ✓ covered  Adding a product increases the badge by one.
+AC2 ✓ covered  Removing a product decreases the badge by one.
+AC3 ✓ covered  When the cart is empty, no badge is shown.
+AC4 ✓ covered  The badge count matches the cart contents.
+AC5 ✓ covered  The count is kept after reload.
+
+Every acceptance criterion has a passing test.</pre><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/blob/main/ai-test-agent/sample-run.txt">See the complete recorded output →</a></section>
+<section class="panel"><h2>5. Reproduce it</h2><pre>npm ci
+npx playwright install chromium
+npm run agent -- ai-test-agent/stories/cart-badge.md --replay</pre><p>The suite targets the public Sauce Demo practice app. Employer and client code is not used in this example.</p><a href="https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio">Browse the repository →</a></section>
+<p class="footer">Ibtsam Ayyaz · QA Automation Engineer / SDET · <a href="mailto:ibtsamayyaz01@gmail.com">Contact</a></p>
+</main></body></html>

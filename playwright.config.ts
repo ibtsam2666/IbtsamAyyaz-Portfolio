@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const isCI = !!process.env.CI;
+const SITE_PORT = 4179;
 
 export default defineConfig({
   fullyParallel: true,
@@ -30,5 +31,17 @@ export default defineConfig({
       testDir: './api-tests/tests',
       use: { baseURL: 'https://restful-booker.herokuapp.com', extraHTTPHeaders: { Accept: 'application/json' } },
     },
+    {
+      // The portfolio site itself, served locally: accessibility and page basics.
+      name: 'site',
+      testDir: './site-tests',
+      use: { ...devices['Desktop Chrome'], baseURL: `http://127.0.0.1:${SITE_PORT}` },
+    },
   ],
+  webServer: {
+    command: `node scripts/serve.mjs ${SITE_PORT}`,
+    url: `http://127.0.0.1:${SITE_PORT}/`,
+    reuseExistingServer: !isCI,
+    stdout: 'ignore',
+  },
 });
