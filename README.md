@@ -39,6 +39,8 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | [`how-to-run.html`](how-to-run.html) | Short setup guide for tests, the AI agent replay, mutation testing and MCP demo | Live |
 | [`ui-tests/`](ui-tests) | Playwright + TypeScript UI framework: Page Object Model, custom fixtures, data-driven logins from JSON, `@smoke` / `@regression` tags, money checks on checkout totals | Live |
 | [`api-tests/`](api-tests) | API tests with [zod](https://zod.dev) contracts, an auth-token fixture that creates and cleans up its own data, negative and security cases | Live |
+| [`site-tests/`](site-tests) | The portfolio tests itself: axe WCAG 2.1 AA checks on every page (both themes), titles, descriptions, favicon, one `h1`, and the custom 404 | Live |
+| [`lighthouserc.json`](lighthouserc.json) + [`scripts/check-links.mjs`](scripts/check-links.mjs) | Quality gates in CI: Lighthouse budgets (accessibility ≥ 95, best practices and SEO ≥ 90) and an internal link and anchor check. The site only deploys when they pass | Live |
 | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | 4-way sharded test runs, merged HTML report, type check, demo checks, Pages deploy of the site plus `/report` | Live |
 | [`mutation-testing/`](mutation-testing) | Mutates one assertion at a time and checks the test fails; reports a mutation score and the assertions to strengthen ([sample output](mutation-testing/sample-output.txt)) | Live |
 | [`mcp-rerun-server/`](mcp-rerun-server) | An MCP server an AI assistant can call to list failed or flaky tests and rerun only those | Live |
@@ -57,7 +59,9 @@ Requires Node.js 20+.
 ```bash
 npm ci
 npx playwright install chromium
-npm test                 # UI + API suites (20 tests)
+npm test                 # UI, API, site and generated-agent suites (35 tests)
+npx playwright test --project=site   # accessibility and page checks on the portfolio itself
+node scripts/check-links.mjs         # internal link check
 npm run test:smoke       # only @smoke
 npm run report           # open the HTML report
 npm run build:portfolio-assets # regenerate social preview and demo recording

@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ['**']
   pull_request:
   workflow_dispatch:
 
@@ -99,10 +99,32 @@ jobs:
       - name: Mutation testing on the checkout spec
         run: npx tsx mutation-testing/mutate-assertions.ts ui-tests/tests/checkout.spec.ts
 
+  quality:
+    name: Site quality (links, Lighthouse)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Internal link check
+        run: node scripts/check-links.mjs
+      - name: Lighthouse budgets (accessibility ≥ 95, best practices and SEO ≥ 90)
+        run: npx --yes @lhci/cli@0.15.1 autorun
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: lighthouse-report
+          path: lighthouse-report
+          retention-days: 14
+
   pages:
     name: Publish site and latest report
-    needs: report
-    if: ${{ github.ref == 'refs/heads/main' && !cancelled() }}
+    needs: [report, quality]
+    if: ${{ github.ref == 'refs/heads/main' && !cancelled() && needs.quality.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -118,7 +140,7 @@ jobs:
           path: site/report
       - name: Assemble site
         run: |
-          cp index.html site/index.html
+          cp index.html 404.html favicon.svg robots.txt sitemap.xml site/
           mkdir -p site/ai-test-agent site/mutation-testing site/media site/case-studies
           cp ai-test-agent/sample-run.txt site/ai-test-agent/sample-run.txt
           cp ai-test-agent/lab-replay.json site/ai-test-agent/lab-replay.json

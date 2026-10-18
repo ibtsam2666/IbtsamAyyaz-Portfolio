@@ -5,3 +5,5 @@ playwright-report/
 ai-test-agent/generated/last-run.json
 ai-test-agent/generated/*.run.json
 blob-report/
+.lighthouseci/
+lighthouse-report/
