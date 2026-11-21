@@ -1,0 +1,11 @@
+
+Mutation run: cypress-migration/playwright/cart.spec.ts (5 mutants, project ui)
+
+Baseline: running the original spec...
+ 1. KILLED   line 10 (change text): await expect(signedIn.cartBadge).toHaveText('MUTATED 2');
+ 2. KILLED   line 12 (change number): await expect(page.getByTestId('inventory-item')).toHaveCount(3);
+ 3. KILLED   line 13 (change text): await expect(page.getByTestId('inventory-item-name').first()).toHaveText('MUTATED Sauce Labs Backpack');
+ 4. KILLED   line 19 (negate matcher): expect(prices).not.toEqual([...prices].sort((a, b) => b - a));
+ 5. KILLED   line 25 (change text): await expect(signedIn.cartBadge).toHaveText('MUTATED 1');
+
+Mutation score: 100% (5/5 killed)

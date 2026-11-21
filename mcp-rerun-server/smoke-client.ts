@@ -1,11 +1,14 @@
 /**
- * Talks to the MCP server the way an AI assistant would: starts it over stdio,
- * lists its tools, calls list_failed_tests, then reruns one test by case ID. Used in CI and locally:
+ * Talks to the MCP server the way an AI assistant would: starts it over stdio, lists its tools,
+ * lists the API tests with their case IDs (without running them), checks the last report for
+ * failures, then reruns one test by case ID. Used in CI and locally:
  *   npx tsx mcp-rerun-server/smoke-client.ts
  */
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import path from 'node:path';
+
+type Reply = { content: { text: string }[]; structuredContent?: Record<string, any> };
 
 async function main() {
   const transport = new StdioClientTransport({
@@ -14,23 +17,30 @@ async function main() {
   });
   const client = new Client({ name: 'smoke-client', version: '1.0.0' });
   await client.connect(transport);
+  const call = async (name: string, args: Record<string, unknown> = {}) => {
+    const r = (await client.callTool({ name, arguments: args })) as unknown as Reply;
+    console.log(`\n${name} ${JSON.stringify(args)} →\n${r.content[0].text.split('\n').slice(0, 6).join('\n')}`);
+    return r;
+  };
 
-  const { tools } = await client.listTools();
-  console.log('Tools:', tools.map((t) => t.name).join(', '));
+  const names = (await client.listTools()).tools.map((t) => t.name);
+  console.log('Tools:', names.join(', '));
 
-  const res = await client.callTool({ name: 'list_failed_tests', arguments: {} });
-  console.log('\nlist_failed_tests →\n' + (res.content as { text: string }[])[0].text);
-
-  // Run one fast API test by its case ID, the way a test-management ID is used at work.
-  const byId = await client.callTool({ name: 'rerun_by_id', arguments: { ids: ['TC-401'] } });
-  console.log('\nrerun_by_id TC-401 →\n' + (byId.content as { text: string }[])[0].text.split('\n')[0]);
+  // Find tests by case ID before running anything, the way a test-management ID is used at work.
+  const listed = await call('list_tests', { project: 'api' });
+  await call('list_failed_tests');
+  const byId = await call('rerun_by_id', { ids: ['TC-401'] });
   console.log('structured:', JSON.stringify(byId.structuredContent));
-
   await client.close();
-  const names = tools.map((t) => t.name);
-  const ran = (byId.structuredContent as { counts?: { passed: number; skipped: number } } | undefined)?.counts;
-  if (!['rerun_failed', 'rerun_by_id', 'run_tests', 'list_failed_tests'].every((n) => names.includes(n))) process.exit(1);
-  if (!ran || ran.passed + ran.skipped < 1) process.exit(1);
+
+  const counts = byId.structuredContent?.counts as { passed: number; skipped: number } | undefined;
+  const checks: [string, boolean][] = [
+    ['6 tools', ['list_failed_tests', 'show_trace', 'list_tests', 'rerun_failed', 'rerun_by_id', 'run_tests'].every((n) => names.includes(n))],
+    ['list_tests finds the API cases', (listed.structuredContent?.withIds ?? 0) >= 10],
+    ['rerun_by_id TC-401 ran', !!counts && counts.passed + counts.skipped >= 1],
+  ];
+  for (const [name, ok] of checks) console.log(`${ok ? 'ok  ' : 'FAIL'} ${name}`);
+  if (checks.some(([, ok]) => !ok)) process.exit(1);
 }
 
 main().catch((e) => {

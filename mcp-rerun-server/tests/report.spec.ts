@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import path from 'node:path';
 import { readFileSync } from 'node:fs';
-import { byCaseIds, countRows, failedTests, grepFor, parseReport } from '../report';
+import { byCaseIds, countRows, failedTests, findTest, grepFor, listingText, parseReport, summaryMarkdown, traceText } from '../report';
 import { safeSpecPath } from '../tools';
 
 const report = JSON.parse(readFileSync(path.join(__dirname, 'fixtures', 'results.json'), 'utf8'));
@@ -59,4 +59,60 @@ test.describe('spec path guard', () => {
     expect(() => safeSpecPath('package.json', root)).toThrow(/Not a spec file/);
     expect(() => safeSpecPath('ui-tests/tests/nope.spec.ts', root)).toThrow(/No such spec/);
   });
+});
+
+test.describe('show_trace helpers', () => {
+  test('a failed test keeps its full error, location, failing step and saved files', () => {
+    const r = rows[0];
+    expect(r.errorDetail).toBe('Error: expect(received).toBeCloseTo(expected)\n\nExpected: 41.02');
+    expect(r.errorAt).toBe('ui-tests/tests/checkout.spec.ts:21:5');
+    expect(r.failedStep).toBe('expect.toBeCloseTo');
+    // stdout is inline (no path), so it is not listed as a file
+    expect(r.attachments.map((a) => a.name)).toEqual(['screenshot', 'trace']);
+  });
+
+  test('findTest by case ID, by title, and prefers failing tests', () => {
+    expect(findTest(rows, 'tc-302').match?.title).toBe('checkout › checkout requires a postal code');
+    expect(findTest(rows, 'guest').match?.ids).toEqual(['TC-303']);
+    // "checkout" matches all three checkout tests; only two failed or were flaky, so no single match
+    const many = findTest(rows, 'checkout');
+    expect(many.match).toBeNull();
+    expect(many.candidates.map((c) => c.status)).toEqual(['failed', 'flaky']);
+    expect(findTest(rows, 'TC-999')).toEqual({ match: null, candidates: [] });
+  });
+
+  test('traceText shows the step, error and the show-trace command', () => {
+    const t = traceText(rows[0]);
+    expect(t).toContain('[failed] checkout › order total equals subtotal plus 8% tax (TC-301)');
+    expect(t).toContain('Failed step: expect.toBeCloseTo');
+    expect(t).toContain('Open the trace: npx playwright show-trace "test-results/checkout-order-total/trace.zip"');
+  });
+
+  test('traceText suggests turning traces on when none was saved', () => {
+    expect(traceText(rows[1])).toContain("trace: 'retain-on-failure'");
+    expect(traceText(rows[2])).toContain('This test passed in the last run.');
+  });
+});
+
+test.describe('list_tests helper', () => {
+  test('one line per test with case IDs first, and a cap', () => {
+    const lines = listingText(rows).split('\n');
+    expect(lines[0]).toBe('TC-301  checkout › order total equals subtotal plus 8% tax  (ui-tests/tests/checkout.spec.ts:7, ui)');
+    expect(listingText(rows, 2).split('\n').pop()).toBe('... and 2 more. Narrow it with grep or project.');
+  });
+});
+
+test('traceText shows saved files relative to the project root', () => {
+  const root = path.resolve('/work/shop');
+  const row = { ...rows[0], attachments: [{ name: 'trace', path: path.join(root, 'test-results', 'a', 'trace.zip') }] };
+  expect(traceText(row, root)).toContain('show-trace "test-results/a/trace.zip"');
+});
+
+test('job summary has the counts table and one row per failed or flaky test', () => {
+  const md = summaryMarkdown(rows, 'Fixture run');
+  expect(md).toContain('### ❌ Fixture run');
+  expect(md).toContain('| 4 | 1 | 1 | 1 | 1 |');
+  expect(md).toContain('| failed | checkout › order total equals subtotal plus 8% tax | TC-301 |');
+  expect(md).toContain('| flaky | checkout › checkout requires a postal code | TC-302 |');
+  expect(md).not.toContain('health check responds');
 });

@@ -19,8 +19,12 @@ type Mutant = { line: number; original: string; mutated: string; rule: string };
 const RULES: { name: string; match: RegExp; apply: (line: string) => string }[] = [
   { name: 'negate matcher', match: /expect\((.*)\)\.(?!not\.)(to\w+)\(/, apply: (l) => l.replace(/expect\((.*?)\)\.(to\w+)\(/, 'expect($1).not.$2(') },
   { name: 'remove negation', match: /\.not\.to\w+\(/, apply: (l) => l.replace('.not.', '.') },
-  { name: 'change number', match: /\b(toBe|toEqual|toBeCloseTo|toHaveCount|toBeGreaterThan|toBeLessThan)\(\s*-?\d/, apply: (l) => l.replace(/(\(\s*)(-?\d+(?:\.\d+)?)/, (_m, p, n) => `${p}${Number(n) + 1}`) },
-  { name: 'change text', match: /\b(toHaveText|toContainText|toHaveURL|toBe)\(\s*['"`]/, apply: (l) => l.replace(/(\(\s*['"`])/, '$1MUTATED ') },
+  {
+    name: 'change number',
+    match: /\b(toBe|toEqual|toBeCloseTo|toHaveCount|toBeGreaterThan|toBeLessThan)\(\s*-?\d/,
+    apply: (l) => l.replace(/(\(\s*)(-?\d+(?:\.\d+)?)/, (_m, p, n) => `${p}${Number(n) + 1}`),
+  },
+  { name: 'change text', match: /\b(toHaveText|toContainText|toHaveURL|toBe)\(\s*['"`]/, apply: (l) => l.replace(/(\b(?:toHaveText|toContainText|toHaveURL|toBe)\(\s*['"`])/, '$1MUTATED ') },
 ];
 
 function mutantsFor(source: string): Mutant[] {
