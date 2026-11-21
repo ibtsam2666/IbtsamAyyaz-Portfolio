@@ -6,7 +6,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * 1'   # weekly, so the badge shows the demos still pass
+    - cron: '0 6 * * 1' # weekly, so the badge shows the demos still pass
 
 permissions:
   contents: read
@@ -31,8 +31,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - name: Run UI and API suites (sharded)
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Run UI, API, cross-browser smoke and site suites (sharded)
         run: npx playwright test --shard=${{ matrix.shard }}/4 --reporter=blob
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
@@ -60,6 +60,12 @@ jobs:
           merge-multiple: true
       - name: Merge shard reports
         run: npx playwright merge-reports --reporter html ./all-blob-reports
+      - name: Job summary (pass/fail/flaky/skipped)
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: merged-results.json
+        run: |
+          npx playwright merge-reports --reporter json ./all-blob-reports
+          npx tsx mcp-rerun-server/summary.ts merged-results.json --title "Playwright (all shards)"
       - uses: actions/upload-artifact@v4
         with:
           name: html-report
@@ -67,7 +73,7 @@ jobs:
           retention-days: 14
 
   typecheck:
-    name: Type check
+    name: Type check and lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -77,6 +83,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: ESLint (typescript-eslint + eslint-plugin-playwright)
+        run: npm run lint
+      - name: Prettier
+        run: npm run format:check
 
   demos:
     name: Demos (MCP server, AI agent replay, mutation testing)
@@ -100,6 +110,8 @@ jobs:
         run: node scripts/agent-lab-replay.mjs --scenario all --format html --out agent-lab-ci-report.html
       - name: Mutation testing on the checkout spec
         run: npx tsx mutation-testing/mutate-assertions.ts ui-tests/tests/checkout.spec.ts
+      - name: Mutation testing on the spec migrated from Cypress
+        run: npx tsx mutation-testing/mutate-assertions.ts cypress-migration/playwright/cart.spec.ts
 
   quality:
     name: Site quality (links, Lighthouse)

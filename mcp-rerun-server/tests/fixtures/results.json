@@ -19,7 +19,56 @@
                   "projectName": "ui",
                   "status": "unexpected",
                   "results": [
-                    { "status": "failed", "error": { "message": "\u001b[31mError: expect(received).toBeCloseTo(expected)\u001b[39m\n\nExpected: 41.02" } }
+                    {
+                      "status": "failed",
+                      "error": {
+                        "message": "\u001b[31mError: expect(received).toBeCloseTo(expected)\u001b[39m\n\nExpected: 41.02",
+                        "location": {
+                          "file": "ui-tests/tests/checkout.spec.ts",
+                          "line": 21,
+                          "column": 5
+                        }
+                      },
+                      "steps": [
+                        {
+                          "title": "add two items",
+                          "duration": 300
+                        },
+                        {
+                          "title": "check the totals",
+                          "duration": 40,
+                          "error": {
+                            "message": "x"
+                          },
+                          "steps": [
+                            {
+                              "title": "expect.toBeCloseTo",
+                              "duration": 1,
+                              "error": {
+                                "message": "x"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "test-results/checkout-order-total/test-failed-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "test-results/checkout-order-total/trace.zip"
+                        },
+                        {
+                          "name": "stdout",
+                          "contentType": "text/plain",
+                          "body": "aGk="
+                        }
+                      ]
+                    }
                   ]
                 }
               ]
@@ -33,7 +82,17 @@
                 {
                   "projectName": "ui",
                   "status": "flaky",
-                  "results": [{ "status": "failed", "error": { "message": "Timeout 5000ms exceeded" } }, { "status": "passed" }]
+                  "results": [
+                    {
+                      "status": "failed",
+                      "error": {
+                        "message": "Timeout 5000ms exceeded"
+                      }
+                    },
+                    {
+                      "status": "passed"
+                    }
+                  ]
                 }
               ]
             }
@@ -48,7 +107,17 @@
                   "file": "ui-tests/tests/checkout.spec.ts",
                   "line": 40,
                   "tags": [],
-                  "tests": [{ "projectName": "ui", "status": "expected", "results": [{ "status": "passed" }] }]
+                  "tests": [
+                    {
+                      "projectName": "ui",
+                      "status": "expected",
+                      "results": [
+                        {
+                          "status": "passed"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -65,7 +134,17 @@
           "file": "booking.spec.ts",
           "line": 5,
           "tags": ["smoke", "TC-401"],
-          "tests": [{ "projectName": "api", "status": "skipped", "results": [{ "status": "skipped" }] }]
+          "tests": [
+            {
+              "projectName": "api",
+              "status": "skipped",
+              "results": [
+                {
+                  "status": "skipped"
+                }
+              ]
+            }
+          ]
         }
       ],
       "suites": []

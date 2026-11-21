@@ -1,3 +1,4 @@
+/* eslint-disable playwright/no-conditional-in-test, playwright/no-conditional-expect -- the dead branch is the point of this demo */
 import { test, expect } from '../../ui-tests/fixtures/shop';
 
 // A deliberately flawed spec for the mutation demo.

@@ -22,7 +22,10 @@ export class InventoryPage {
 
   /** Product ids follow the site's convention, e.g. "Sauce Labs Backpack" -> "sauce-labs-backpack". */
   private slug(name: string) {
-    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
   }
 
   async add(name: string) {

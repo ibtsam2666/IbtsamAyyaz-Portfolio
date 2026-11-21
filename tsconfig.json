@@ -11,5 +11,5 @@
     "types": ["node"]
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "ai-test-agent/generated"]
+  "exclude": ["node_modules", "ai-test-agent/generated", "cypress-migration/cypress"]
 }

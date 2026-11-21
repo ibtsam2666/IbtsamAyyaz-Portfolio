@@ -15,7 +15,13 @@ const PAGES = [
 async function audit(page: Page) {
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   const blocking = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
-  const summary = blocking.map((v) => `${v.id} (${v.impact}): ${v.help}\n    ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join('\n    ')}`);
+  const summary = blocking.map(
+    (v) =>
+      `${v.id} (${v.impact}): ${v.help}\n    ${v.nodes
+        .slice(0, 3)
+        .map((n) => n.target.join(' '))
+        .join('\n    ')}`,
+  );
   expect(summary, `Accessibility violations:\n  ${summary.join('\n  ')}`).toEqual([]);
 }
 

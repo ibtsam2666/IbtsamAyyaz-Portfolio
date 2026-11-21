@@ -1,0 +1,31 @@
+name: Update visual baselines
+
+# Visual baselines must come from Linux, the OS CI compares on. Push a branch named
+# update-snapshots/<anything> (or run this by hand), download the "visual-baselines" artifact,
+# and commit the PNGs it contains under site-tests/visual.spec.ts-snapshots/.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['update-snapshots/**']
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=site --grep @visual --update-snapshots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: site-tests/visual.spec.ts-snapshots/
+          retention-days: 7

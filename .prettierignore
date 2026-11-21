@@ -1,0 +1,14 @@
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+lighthouse-report/
+.lighthouseci/
+package-lock.json
+*.md
+*.html
+*.txt
+ai-test-agent/generated/
+ai-test-agent/recorded/
+ai-test-agent/lab-replay.json
+mcp-rerun-server/tests/fixtures/

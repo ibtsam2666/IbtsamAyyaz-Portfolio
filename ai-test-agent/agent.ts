@@ -132,9 +132,10 @@ async function main() {
   const inputRate = inputRateText ? Number(inputRateText) : Number.NaN;
   const outputRate = outputRateText ? Number(outputRateText) : Number.NaN;
   const usage = live?.usage ?? null;
-  const estimatedCostUsd = usage && Number.isFinite(inputRate) && inputRate >= 0 && Number.isFinite(outputRate) && outputRate >= 0
-    ? Number(((usage.inputTokens * inputRate + usage.outputTokens * outputRate) / 1_000_000).toFixed(6))
-    : null;
+  const estimatedCostUsd =
+    usage && Number.isFinite(inputRate) && inputRate >= 0 && Number.isFinite(outputRate) && outputRate >= 0
+      ? Number(((usage.inputTokens * inputRate + usage.outputTokens * outputRate) / 1_000_000).toFixed(6))
+      : null;
   const metadata = {
     mode: replay ? 'recorded replay' : 'live model call',
     model: usage?.model ?? 'recorded response; original model metadata unavailable',
@@ -155,8 +156,12 @@ async function main() {
     tokens: usage ? { input: usage.inputTokens, output: usage.outputTokens, total: usage.inputTokens + usage.outputTokens } : null,
     estimatedApiCostUsd: estimatedCostUsd,
     costRatesUsdPerMillion: usage && estimatedCostUsd !== null ? { input: inputRate, output: outputRate } : null,
-    costNote: usage ? (estimatedCostUsd === null ? 'Set AGENT_INPUT_USD_PER_MILLION and AGENT_OUTPUT_USD_PER_MILLION to calculate a cost estimate.' : 'Estimate uses user-supplied rates; not an invoice.') : 'Replay mode makes no model call; original token usage is unavailable.',
-    results: { passed: results.filter(r => r.ok).length, failed: results.filter(r => !r.ok).length, total: results.length },
+    costNote: usage
+      ? estimatedCostUsd === null
+        ? 'Set AGENT_INPUT_USD_PER_MILLION and AGENT_OUTPUT_USD_PER_MILLION to calculate a cost estimate.'
+        : 'Estimate uses user-supplied rates; not an invoice.'
+      : 'Replay mode makes no model call; original token usage is unavailable.',
+    results: { passed: results.filter((r) => r.ok).length, failed: results.filter((r) => !r.ok).length, total: results.length },
   };
   const metadataFile = path.join(OUT_DIR, `${name}.run.json`);
   writeFileSync(metadataFile, JSON.stringify(metadata, null, 2));

@@ -7,9 +7,17 @@ import { extname, relative, resolve, sep } from 'node:path';
 const root = process.cwd();
 const port = Number(process.argv[2] ?? process.env.PORT ?? 4179);
 const mime = {
-  '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-  '.json': 'application/json', '.txt': 'text/plain; charset=utf-8', '.md': 'text/markdown; charset=utf-8',
-  '.svg': 'image/svg+xml', '.png': 'image/png', '.webm': 'video/webm', '.pdf': 'application/pdf', '.xml': 'application/xml',
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json',
+  '.txt': 'text/plain; charset=utf-8',
+  '.md': 'text/markdown; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.webm': 'video/webm',
+  '.pdf': 'application/pdf',
+  '.xml': 'application/xml',
 };
 
 createServer(async (req, res) => {

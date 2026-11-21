@@ -10,11 +10,7 @@ export default defineConfig({
   // passes only on retry is marked "flaky" so it can be fixed.
   retries: isCI ? 1 : 0,
   workers: isCI ? 4 : undefined,
-  reporter: [
-    ['list'],
-    ['html', { open: 'never' }],
-    ['json', { outputFile: 'test-results/results.json' }],
-  ],
+  reporter: [['list'], ['html', { open: 'never' }], ['json', { outputFile: 'test-results/results.json' }]],
   use: {
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
@@ -23,8 +19,27 @@ export default defineConfig({
     {
       name: 'ui',
       testDir: '.',
-      testMatch: ['ui-tests/tests/**/*.spec.ts', 'mutation-testing/examples/**/*.spec.ts', '**/__mutant__.*.spec.ts', 'ai-test-agent/generated/**/*.spec.ts'],
+      testMatch: [
+        'ui-tests/tests/**/*.spec.ts',
+        'cypress-migration/playwright/**/*.spec.ts',
+        'mutation-testing/examples/**/*.spec.ts',
+        '**/__mutant__.*.spec.ts',
+        'ai-test-agent/generated/**/*.spec.ts',
+      ],
       use: { ...devices['Desktop Chrome'], baseURL: 'https://www.saucedemo.com', testIdAttribute: 'data-test' },
+    },
+    {
+      // Cross-browser smoke: the @smoke UI tests again in Firefox and WebKit (Safari's engine).
+      name: 'firefox',
+      testDir: './ui-tests/tests',
+      grep: /@smoke/,
+      use: { ...devices['Desktop Firefox'], baseURL: 'https://www.saucedemo.com', testIdAttribute: 'data-test' },
+    },
+    {
+      name: 'webkit',
+      testDir: './ui-tests/tests',
+      grep: /@smoke/,
+      use: { ...devices['Desktop Safari'], baseURL: 'https://www.saucedemo.com', testIdAttribute: 'data-test' },
     },
     {
       name: 'api',

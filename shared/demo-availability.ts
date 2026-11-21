@@ -32,6 +32,8 @@ export function unavailableReason(url: string, timeoutMs = 15_000): Promise<stri
 export function skipWhenDemoDown<T extends TestType<any, any>>(test: T, url: string): T {
   return test.extend<{ demoAvailable: void }>({
     demoAvailable: [
+      // Playwright fixtures must destructure their first argument, even when it is unused.
+      // eslint-disable-next-line no-empty-pattern
       async ({}, use: () => Promise<void>, testInfo: TestInfo) => {
         const reason = await unavailableReason(url);
         if (reason) {
