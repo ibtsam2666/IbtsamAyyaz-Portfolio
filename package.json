@@ -17,13 +17,14 @@
     "agent": "tsx ai-test-agent/agent.ts",
     "agent:lab": "node scripts/agent-lab-replay.mjs",
     "build:portfolio-assets": "node scripts/build-portfolio-assets.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:unit": "playwright test --project=unit"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "0.32.1",
     "@axe-core/playwright": "^4.10.2",
-    "@modelcontextprotocol/sdk": "1.13.0",
-    "@playwright/test": "1.55.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@playwright/test": "1.65.0",
     "@types/node": "22.10.2",
     "tsx": "4.19.2",
     "typescript": "5.7.2",

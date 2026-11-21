@@ -1,6 +1,6 @@
 /**
  * Talks to the MCP server the way an AI assistant would: starts it over stdio,
- * lists its tools and calls list_failed_tests. Used as a quick check in CI and locally:
+ * lists its tools, calls list_failed_tests, then reruns one test by case ID. Used in CI and locally:
  *   npx tsx mcp-rerun-server/smoke-client.ts
  */
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
@@ -21,8 +21,16 @@ async function main() {
   const res = await client.callTool({ name: 'list_failed_tests', arguments: {} });
   console.log('\nlist_failed_tests →\n' + (res.content as { text: string }[])[0].text);
 
+  // Run one fast API test by its case ID, the way a test-management ID is used at work.
+  const byId = await client.callTool({ name: 'rerun_by_id', arguments: { ids: ['TC-401'] } });
+  console.log('\nrerun_by_id TC-401 →\n' + (byId.content as { text: string }[])[0].text.split('\n')[0]);
+  console.log('structured:', JSON.stringify(byId.structuredContent));
+
   await client.close();
-  if (!tools.some((t) => t.name === 'rerun_failed')) process.exit(1);
+  const names = tools.map((t) => t.name);
+  const ran = (byId.structuredContent as { counts?: { passed: number; skipped: number } } | undefined)?.counts;
+  if (!['rerun_failed', 'rerun_by_id', 'run_tests', 'list_failed_tests'].every((n) => names.includes(n))) process.exit(1);
+  if (!ran || ran.passed + ran.skipped < 1) process.exit(1);
 }
 
 main().catch((e) => {

@@ -11,6 +11,15 @@ I build test automation that engineers trust: Playwright and Cypress in TypeScri
 
 Based in Lahore, Pakistan. Open to remote roles (including U.S. hours) and to relocation with visa sponsorship.
 
+## Start here (2 minutes)
+
+- **Framework:** [`ui-tests/`](ui-tests) (Page Object Model, fixtures, data-driven logins) and [`api-tests/`](api-tests) (zod contracts, self-cleaning data). Every test carries a case ID tag such as `@TC-301`.
+- **MCP server:** [`mcp-rerun-server/`](mcp-rerun-server) lets an AI assistant list failed or flaky tests and rerun only those, or rerun by case ID. Also published on its own as [playwright-rerun-mcp](https://github.com/ibtsam2666/playwright-rerun-mcp).
+- **Proof it runs:** the [CI badge](https://github.com/ibtsam2666/IbtsamAyyaz-Portfolio/actions/workflows/ci.yml) (runs on every push and weekly) and the [latest HTML report](https://ibtsam2666.github.io/IbtsamAyyaz-Portfolio/report/).
+- **Résumé:** [`resume.pdf`](resume.pdf), one page, 5+ years in QA automation.
+
+The demos hit free public practice apps. When one of them is down, its tests are skipped with a `demo-unavailable` note instead of failing the build.
+
 ## Highlights from my work
 
 | Result | How |
@@ -32,7 +41,7 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | [`agent-lab.html`](agent-lab.html) | Six interactive QA scenarios: evaluation, failure triage, review gates, tool traces, bounded recovery, and cost/speed estimates | Replay, no API key |
 | [`ai-test-agent/lab-replay.json`](ai-test-agent/lab-replay.json) + [`scripts/agent-lab-replay.mjs`](scripts/agent-lab-replay.mjs) | Versioned corpus and CLI with shared baseline/agent/human scoring, four triage patterns, audit decisions, evidence traces, and report export | `npm run agent:lab -- --scenario all` |
 | [`how-ai-agents-work.html`](how-ai-agents-work.html) | Architecture, evidence rubric, live/replay distinction, and safety boundaries for the demos | Read online |
-| [`resume.pdf`](resume.pdf) | General-purpose QA résumé PDF for download | Live |
+| [`resume.pdf`](resume.pdf) | One-page QA automation résumé (PDF) | Live |
 | [`social-preview.png`](social-preview.png) | Open Graph / social-sharing image | Live |
 | [`media/qa-agent-walkthrough.webm`](media/qa-agent-walkthrough.webm) | Screen recording of the illustrative pipeline demo | Live |
 | [`case-studies/cart-badge-agent.html`](case-studies/cart-badge-agent.html) | Public end-to-end case study: story → generated tests → acceptance-criteria report | Live |
@@ -43,7 +52,7 @@ Employer and client code is under NDA, so it is not here. The demos below recrea
 | [`lighthouserc.json`](lighthouserc.json) + [`scripts/check-links.mjs`](scripts/check-links.mjs) | Quality gates in CI: Lighthouse budgets (accessibility ≥ 95, best practices and SEO ≥ 90) and an internal link and anchor check. The site only deploys when they pass | Live |
 | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | 4-way sharded test runs, merged HTML report, type check, demo checks, Pages deploy of the site plus `/report` | Live |
 | [`mutation-testing/`](mutation-testing) | Mutates one assertion at a time and checks the test fails; reports a mutation score and the assertions to strengthen ([sample output](mutation-testing/sample-output.txt)) | Live |
-| [`mcp-rerun-server/`](mcp-rerun-server) | An MCP server an AI assistant can call to list failed or flaky tests and rerun only those | Live |
+| [`mcp-rerun-server/`](mcp-rerun-server) | An MCP server an AI assistant can call to list failed or flaky tests, rerun only those, or rerun by case ID; unit-tested report parser and path guard | Live |
 | [`ai-test-agent/`](ai-test-agent) | An agent that turns a user story into a test plan and a Playwright spec, runs it, and reports acceptance criteria with no passing test ([sample run](ai-test-agent/sample-run.txt)) | Live |
 
 ## Run it
@@ -59,7 +68,7 @@ Requires Node.js 20+.
 ```bash
 npm ci
 npx playwright install chromium
-npm test                 # UI, API, site and generated-agent suites (35 tests)
+npm test                 # UI, API, site, generated-agent and MCP unit suites (44 tests)
 npx playwright test --project=site   # accessibility and page checks on the portfolio itself
 node scripts/check-links.mjs         # internal link check
 npm run test:smoke       # only @smoke
@@ -80,9 +89,19 @@ A **killed** mutant means the assertion really protects the behaviour. A **survi
 
 ```bash
 npx tsx mcp-rerun-server/smoke-client.ts   # starts the server over stdio and calls it
+npm run test:unit                          # unit tests for the report parser and spec-path guard
 ```
 
-To use it from Claude Code or another MCP client, add the entry in [`mcp-rerun-server/mcp.example.json`](mcp-rerun-server/mcp.example.json) to your MCP config, run from the repo root. Tools: `list_failed_tests`, `rerun_failed`, `run_tests`.
+To use it from Claude Code or another MCP client, add the entry in [`mcp-rerun-server/mcp.example.json`](mcp-rerun-server/mcp.example.json) to your MCP config, run from the repo root. Tools:
+
+| Tool | What it does |
+|---|---|
+| `list_failed_tests` | Reads the last JSON report and lists failed and flaky tests with their case IDs (read-only) |
+| `rerun_failed` | Reruns only the tests that failed last time |
+| `rerun_by_id` | Reruns tests by case ID, e.g. `["TC-301", "TC-401"]` |
+| `run_tests` | Runs a spec file or a project; paths outside the repo are refused |
+
+Each tool returns a text summary plus structured counts. One run at a time, with a 10-minute timeout (`RERUN_TIMEOUT_MS`).
 
 ### AI test agent
 

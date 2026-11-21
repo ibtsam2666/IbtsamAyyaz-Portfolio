@@ -1,4 +1,8 @@
-import { test as base } from '@playwright/test';
+import { test as playwrightTest } from '@playwright/test';
+import { skipWhenDemoDown } from '../../shared/demo-availability';
+
+// Sauce Demo is a free public app; if it is down, its tests are skipped with a note instead of failing.
+const base = skipWhenDemoDown(playwrightTest, 'https://www.saucedemo.com/');
 import { LoginPage } from '../pages/LoginPage';
 import { InventoryPage } from '../pages/InventoryPage';
 import { CheckoutPage } from '../pages/CheckoutPage';

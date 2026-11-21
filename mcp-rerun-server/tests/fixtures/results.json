@@ -1,0 +1,74 @@
+{
+  "suites": [
+    {
+      "title": "ui-tests/tests/checkout.spec.ts",
+      "file": "ui-tests/tests/checkout.spec.ts",
+      "specs": [],
+      "suites": [
+        {
+          "title": "checkout",
+          "file": "ui-tests/tests/checkout.spec.ts",
+          "specs": [
+            {
+              "title": "order total equals subtotal plus 8% tax",
+              "file": "ui-tests/tests/checkout.spec.ts",
+              "line": 7,
+              "tags": ["smoke", "money", "TC-301"],
+              "tests": [
+                {
+                  "projectName": "ui",
+                  "status": "unexpected",
+                  "results": [
+                    { "status": "failed", "error": { "message": "\u001b[31mError: expect(received).toBeCloseTo(expected)\u001b[39m\n\nExpected: 41.02" } }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "checkout requires a postal code",
+              "file": "ui-tests/tests/checkout.spec.ts",
+              "line": 27,
+              "tags": ["regression", "TC-302"],
+              "tests": [
+                {
+                  "projectName": "ui",
+                  "status": "flaky",
+                  "results": [{ "status": "failed", "error": { "message": "Timeout 5000ms exceeded" } }, { "status": "passed" }]
+                }
+              ]
+            }
+          ],
+          "suites": [
+            {
+              "title": "guest",
+              "file": "ui-tests/tests/checkout.spec.ts",
+              "specs": [
+                {
+                  "title": "guest cannot open checkout [TC-303]",
+                  "file": "ui-tests/tests/checkout.spec.ts",
+                  "line": 40,
+                  "tags": [],
+                  "tests": [{ "projectName": "ui", "status": "expected", "results": [{ "status": "passed" }] }]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "booking.spec.ts",
+      "file": "booking.spec.ts",
+      "specs": [
+        {
+          "title": "health check responds",
+          "file": "booking.spec.ts",
+          "line": 5,
+          "tags": ["smoke", "TC-401"],
+          "tests": [{ "projectName": "api", "status": "skipped", "results": [{ "status": "skipped" }] }]
+        }
+      ],
+      "suites": []
+    }
+  ]
+}

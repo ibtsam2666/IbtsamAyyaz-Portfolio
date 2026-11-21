@@ -32,6 +32,11 @@ export default defineConfig({
       use: { baseURL: 'https://restful-booker.herokuapp.com', extraHTTPHeaders: { Accept: 'application/json' } },
     },
     {
+      // Unit tests for the MCP server's report parser and path guard (no browser).
+      name: 'unit',
+      testDir: './mcp-rerun-server/tests',
+    },
+    {
       // The portfolio site itself, served locally: accessibility and page basics.
       name: 'site',
       testDir: './site-tests',
