@@ -4,7 +4,7 @@ import { CheckoutPage } from '../pages/CheckoutPage';
 const TAX_RATE = 0.08; // the demo shop applies 8% tax
 
 test.describe('checkout', () => {
-  test('order total equals subtotal plus 8% tax', { tag: ['@smoke', '@money'] }, async ({ signedIn, checkout }) => {
+  test('order total equals subtotal plus 8% tax', { tag: ['@smoke', '@money', '@TC-301'] }, async ({ signedIn, checkout }) => {
     await signedIn.add('Sauce Labs Backpack'); // $29.99
     await signedIn.add('Sauce Labs Onesie'); // $7.99
     await signedIn.openCart();
@@ -25,7 +25,7 @@ test.describe('checkout', () => {
     await checkout.finish();
   });
 
-  test('checkout requires a postal code', { tag: '@regression' }, async ({ signedIn, checkout }) => {
+  test('checkout requires a postal code', { tag: ['@regression', '@TC-302'] }, async ({ signedIn, checkout }) => {
     await signedIn.add('Sauce Labs Backpack');
     await signedIn.openCart();
     await checkout.start();

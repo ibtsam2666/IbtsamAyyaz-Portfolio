@@ -1,4 +1,8 @@
-import { test as base, expect, type APIRequestContext } from '@playwright/test';
+import { test as playwrightTest, expect, type APIRequestContext } from '@playwright/test';
+import { skipWhenDemoDown } from '../../shared/demo-availability';
+
+// Restful Booker is a free public API that is sometimes down; skip (with a note) rather than fail.
+const base = skipWhenDemoDown(playwrightTest, 'https://restful-booker.herokuapp.com/ping');
 import { CreatedBooking, type BookingT } from '../schemas/booking';
 
 export function newBooking(overrides: Partial<BookingT> = {}): BookingT {
